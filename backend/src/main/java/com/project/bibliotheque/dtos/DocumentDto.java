@@ -12,8 +12,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class DocumentDto {
     private Long idDocument;
     private String titre;
@@ -24,6 +22,9 @@ public class DocumentDto {
     private String datePublication;
     private String langue;
     private boolean estPretable;
+    private Long fraixExige;
+    private boolean estFortementdemander;
+    private Integer nombreExemplaire;
     private String etat;
     private Long bibliothequeId;
     private List<TransactionDto> transactions;

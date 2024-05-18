@@ -35,6 +35,10 @@ public class BibliothecaireService {
         Bibliothecaire bibliothecaire = bibliothecaireRepository.findById(id).orElse(null);
         return bibliothecaireMapper.toDto(bibliothecaire);
     }
+    public BibliothecaireDto getBibliothecaireByEmail(String email){
+        Bibliothecaire bibliothecaire = bibliothecaireRepository.findByEmail(email);
+        return bibliothecaireMapper.toDto(bibliothecaire);
+    }
 
     public List<BibliothecaireDto> getAllBibliothecaires(){
         List<Bibliothecaire> bibliothecaires = bibliothecaireRepository.findAll();

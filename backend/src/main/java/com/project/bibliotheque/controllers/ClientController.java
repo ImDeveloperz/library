@@ -1,12 +1,16 @@
 package com.project.bibliotheque.controllers;
 
-
-import com.project.bibliotheque.entities.Client;
+import com.project.bibliotheque.dtos.ClientDto;
 import com.project.bibliotheque.services.ClientService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
@@ -17,24 +21,40 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getAllClients(){
+    public List<ClientDto> getAllClients(){
         return clientService.getAllClients();
     }
-    @GetMapping("/{id}")
-    public Client getClientById(Long id){
-        return clientService.getClientById(id);
+
+    @GetMapping("/{client}")
+    public ClientDto getClientByEmail(@RequestParam String email){
+        return clientService.getClientByEmail(email);
     }
+
     @PostMapping
-    public Client addClient(Client client){
-        return clientService.addClient(client);
+    public ClientDto addClient(@RequestBody ClientDto clientDto){
+        return clientService.addClient(clientDto);
     }
+
     @PutMapping("/{id}")
-    public Client updateClient(Long id, Client client){
-        client.setId(id);
-        return clientService.updateClient(client);
+    public ClientDto updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto){
+        clientDto.setId(id);
+        return clientService.updateClient(clientDto);
     }
+
+    @GetMapping("/qrcode")
+    public ResponseEntity<byte[]> getClientQRCode(@RequestParam String email) {
+        byte[] qrCode = clientService.getClientQRCode(email);
+        if (qrCode != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG);
+            return new ResponseEntity<>(qrCode, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteClientById(Long id){
+    public void deleteClientById(@PathVariable Long id){
         clientService.deleteClientById(id);
     }
 }

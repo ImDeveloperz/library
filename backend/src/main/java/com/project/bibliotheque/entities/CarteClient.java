@@ -15,10 +15,12 @@ public class CarteClient {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long idCarteClient;
-    @Column(nullable = false)
-    private String code;
+    private String imageUrl;
+    private boolean estResident = false;
+    private Integer nbrEmprunte = 0;
+    private Integer prix = 0;
     @Temporal(TemporalType.DATE)
     private Date dateFin;
     @OneToOne
-    private Client client;
+    private Utilisateur client;
 }

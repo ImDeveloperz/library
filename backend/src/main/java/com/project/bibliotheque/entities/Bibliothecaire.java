@@ -20,5 +20,5 @@ public class Bibliothecaire extends Utilisateur {
     private Bibliotheque bibliotheque;
     @OneToMany(mappedBy = "emeteur",cascade=CascadeType.ALL)
     private List<Notification> notificationsEmeteur;
-
+    private String status;
 }

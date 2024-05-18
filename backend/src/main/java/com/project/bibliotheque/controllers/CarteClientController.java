@@ -1,12 +1,12 @@
 package com.project.bibliotheque.controllers;
 
-import com.project.bibliotheque.entities.CarteClient;
+import com.project.bibliotheque.dtos.CarteClientDto;
 import com.project.bibliotheque.services.CarteClientService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/carteClient")
 public class CarteClientController {
@@ -16,21 +16,25 @@ public class CarteClientController {
         this.carteClientService = carteClientService;
     }
     @GetMapping
-    public List<CarteClient> getCarteClient(){
+    public List<CarteClientDto> getCarteClient(){
         return carteClientService.getAllCarteClients();
     }
-    @GetMapping("/{id}")
-    public CarteClient getCarteClientById(Long id){
+    @GetMapping("/client")
+    public CarteClientDto getCarteClientById(@RequestParam Long id){
         return carteClientService.getCarteClientById(id);
     }
     @PostMapping
-    public CarteClient addCarteClient(CarteClient carteClient){
-        return carteClientService.addCarteClient(carteClient);
+    public CarteClientDto addCarteClient(@RequestParam String email){
+        return carteClientService.addCarteClient(email);
+    }
+    @GetMapping("/carte")
+    public CarteClientDto getCarteClientByCarte(@RequestParam String email){
+        return carteClientService.addCarteClient(email);
     }
     @PutMapping("/{id}")
-    public CarteClient updateCarteClient(Long id, CarteClient carteClient){
-        carteClient.setIdCarteClient(id);
-        return carteClientService.updateCarteClient(carteClient);
+    public CarteClientDto updateCarteClient(Long id, CarteClientDto carteClientDto){
+        carteClientDto.setIdCarteClient(id);
+        return carteClientService.updateCarteClient(carteClientDto);
     }
     @DeleteMapping("/{id}")
     public void deleteCarteClientById(Long id){

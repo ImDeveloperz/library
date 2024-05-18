@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
@@ -51,7 +52,7 @@ public class SecurityController {
             );
             String subject = authentication.getName();
             String scope = authentication.getAuthorities()
-                    .stream().map(aut -> aut.getAuthority())
+                    .stream().map(GrantedAuthority::getAuthority)
                     .collect(Collectors.joining(" "));
 
             JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
@@ -68,6 +69,10 @@ public class SecurityController {
             return ResponseEntity.ok(Map.of("token",jwt, "role", scope, "email", email));
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email or password is incorrect"));
+        } catch (Exception e) {
+            // Log the exception for debugging purposes
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "An error occurred while processing your request"));
         }
     }
     @PostMapping("/register")
@@ -80,6 +85,7 @@ public class SecurityController {
         String telephone = (String) body.get("telephone");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String d = (String) body.get("naissance");
+        String addresse = (String) body.get("addresse");
         Date naissance = formatter.parse(d);
 
 
@@ -98,8 +104,9 @@ public class SecurityController {
         newUser.setRole(role);
         newUser.setTelephone(telephone);
         newUser.setNaissance(naissance);
+        newUser.setAddresse(addresse);
         clientRepository.save(newUser);
-
+        String scope = newUser.getRole();
         // Generate token for new user
         Instant instant = Instant.now();
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
@@ -114,6 +121,6 @@ public class SecurityController {
         );
         String jwt = jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
 
-        return ResponseEntity.ok(Map.of("token", jwt));
+        return ResponseEntity.ok(Map.of("token",jwt, "role", scope, "email", email));
     }
 }

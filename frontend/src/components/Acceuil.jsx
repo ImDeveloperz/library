@@ -8,7 +8,6 @@ import {isActiveLogin, isActiveRegister} from "../context/GlobalProvider.jsx";
 const Acceuil = (props) => {
     const [isActiveLoged, setIsActiveLogin] = useAtom(isActiveLogin);
     const [isActiveRegisted, setIsActiveRegister] = useAtom(isActiveRegister);
-
     return (
         <div className="h-[80vh]">
             <Home/>

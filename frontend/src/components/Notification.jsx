@@ -51,72 +51,47 @@ const Notification = (props) => {
     return(
         <div className="relative flex items-center">
             <div>
-                <IoMdNotifications className="text-[1.6rem] " onClick={()=>{
+                <IoMdNotifications className="text-[1.6rem] cursor-pointer " onClick={()=>{
                     setIsNotif(!isNotif)
                 }} />
             </div>
             {isNotif ?
-                <div className="min-w-72 text-black bg-white rounded-md -right-[4px] top-12 z-10 absolute pb-4  pt-4 flex flex-col ">
-                    <div className="triangle absolute  -top-2 right-1"></div>
-                    <div>
-                        {
-                            notifications?.length>0 ?
-                                notifications.map(
-                                    (item,value) =>{
-                                        return(
-                                            <div>
-                                                <div className="flex pt-4 p-2 rounded  px-6 gap-3 cursor-pointer hover:bg-gray-300">
-                                                    <Avatar showFallback isBordered size="sm" color="secondary"
-                                                            src='https://images.unsplash.com/broken'/>
-                                                    <div className="flex flex-col items-center  ">
-                                                        <p className="text-[10px] font-semibold ">{item?.emeteur?.prenom} {item?.emeteur?.nom}</p>
-                                                        <p className="text-[10px]">{item.message}</p>
+                <>
+                    <div className="triangle absolute  top-10 -right-1"></div>
+                    <div
+                        className="min-w-72 max-h-96 overflow-scroll z-40 text-black bg-white rounded-md md:-right-[4px] -right-[12px]  top-12  absolute pb-4  pt-4 flex flex-col ">
+                        <div>
+                            {
+                                notifications?.length > 0 ?
+                                    notifications.map(
+                                        (item, value) => {
+                                            return (
+                                                <div>
+                                                    <div
+                                                        className="flex pt-4 p-2 rounded  px-6 gap-3 cursor-pointer hover:bg-gray-300">
+                                                        <Avatar showFallback isBordered size="sm" color="secondary"
+                                                                src='https://images.unsplash.com/broken'/>
+                                                        <div className="flex flex-col items-center  ">
+                                                            <p className="text-[10px] font-semibold ">{item?.emeteur?.prenom} {item?.emeteur?.nom}</p>
+                                                            <p className="text-[10px]">{item.message}</p>
+                                                        </div>
                                                     </div>
+                                                    <Divider className="my-4"/>
                                                 </div>
-                                                <Divider className="my-4"/>
-                                            </div>
 
-                                        )
-                                    }
-                                ) : <div><p> Vous avez pas de notifications </p></div>
-                        }
+                                            )
+                                        }
+                                    ) :
+                                    <div className="flex items-center justify-center text-sm font-normal"><p> Vous avez
+                                        pas
+                                        de notifications </p></div>
+                            }
+                        </div>
                     </div>
-                </div>
+                </>
                 : null
             }
         </div>
-       /* <Dropdown>
-            <DropdownTrigger>
-                <div className="flex items-center justify-center">
-                    <IoMdNotifications className="text-[1.6rem] " />
-                </div>
-            </DropdownTrigger>
-            <DropdownMenu className="text-black flex flex-col items-center justify-center  " variant="flat" aria-label="Dropdown menu with shortcut">
-                <DropdownItem isReadOnly>
-                    {
-                        notifications?.length>0 ?
-                            notifications.map(
-                                (item,value) =>{
-                                    return(
-                                        <div>
-                                            <div className="flex pt-4 px-2 gap-2">
-                                                <Avatar showFallback isBordered size="sm" color="secondary"
-                                                        src='https://images.unsplash.com/broken'/>
-                                                <div className="flex flex-col items-center  ">
-                                                    <p className="text-[10px] font-semibold ">{item?.emeteur?.prenom} {item?.emeteur?.nom}</p>
-                                                    <p className="text-[10px]">{item.message}</p>
-                                                </div>
-                                            </div>
-                                            <Divider className="my-4"/>
-                                        </div>
-
-                                    )
-                                }
-                            ) : <div><p> Vous avez pas de notifications </p></div>
-                    }
-                </DropdownItem>
-            </DropdownMenu>
-        </Dropdown>*/
     )
 }
 

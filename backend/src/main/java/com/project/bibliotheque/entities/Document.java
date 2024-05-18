@@ -24,6 +24,9 @@ public class Document {
     private String auteur;
     private String description;
     private String imgUrl;
+    private Long fraixExige;
+    private Integer nombreExemplaire = 0;
+    private boolean estFortementdemander;
     @Temporal(TemporalType.DATE)
     private Date datePublication;
     private String langue;

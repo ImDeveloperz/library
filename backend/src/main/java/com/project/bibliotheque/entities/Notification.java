@@ -18,11 +18,14 @@ public class Notification {
     private Long idNotification;
     @Column(nullable = false)
     private String message;
+    @Column(nullable = false)
+    private boolean estVue;
     @ManyToOne
     @JoinColumn(name = "emeteur_id")
     private Utilisateur emeteur;
     @ManyToOne
    @JoinColumn(name = "recepteur_id")
     private Utilisateur recepteur;
-
+    private String type;
+    private Long montant = 0L;
 }

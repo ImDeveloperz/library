@@ -1,39 +1,54 @@
 package com.project.bibliotheque.controllers;
 
 
+import com.project.bibliotheque.dtos.AlocationDto;
+import com.project.bibliotheque.entities.CarteClient;
+import com.project.bibliotheque.entities.Document;
 import com.project.bibliotheque.entities.Location;
+import com.project.bibliotheque.entities.Pret;
+import com.project.bibliotheque.repositories.CartClientRepository;
+import com.project.bibliotheque.repositories.DocumentRepository;
 import com.project.bibliotheque.services.LocationService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/locations")
 public class LocationController {
     private final LocationService locationService;
-
-    public LocationController(LocationService locationService) {
+    private final CartClientRepository cartClientRepository;
+    private final DocumentRepository documentRepository;
+    public LocationController(LocationService locationService,DocumentRepository documentRepository,CartClientRepository cartClientRepository){
         this.locationService = locationService;
+        this.cartClientRepository = cartClientRepository;
+        this.documentRepository = documentRepository;
     }
     @GetMapping
-    public List<Location> getAllLocations(){
+    public List<AlocationDto> getAllLocations(){
         return locationService.getAllLocations();
     }
     @GetMapping("/{id}")
     public Location getLocationById(Long id){
         return locationService.getLocationById(id);
     }
-    @PostMapping
-    public Location addLocation(Location location) {
-        return locationService.addLocation(location);
-    }
+
     @PutMapping("/{id}")
     public Location updateLocation(Long id, Location location){
         location.setIdTransaction(id);
         return locationService.updateLocation(location);
     }
-    @DeleteMapping("/{id}")
-    public void deleteLocationById(Long id){
+    @DeleteMapping
+    public void deleteLocationById(@RequestParam Long id){
+        //getPretById(id);
+        Location location= locationService.getLocationById(id);
+        Document document = location.getDocument();
+        CarteClient carteClient = location.getCarteClient();
+        carteClient.setNbrEmprunte(carteClient.getNbrEmprunte() - 1);
+        cartClientRepository.save(carteClient);
+        documentRepository.save(document);
+        document.setNombreExemplaire(document.getNombreExemplaire() + 1);
         locationService.deleteLocationById(id);
     }
 }

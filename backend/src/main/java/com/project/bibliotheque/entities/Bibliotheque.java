@@ -15,7 +15,6 @@ import java.util.List;
 public class Bibliotheque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     private String ville;
     private String libelle;

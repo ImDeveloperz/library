@@ -26,12 +26,22 @@ const Login = (props) => {
                 }
             });
             const token = response.data?.token;
-            console.log(token);
             const role = response?.data?.role;
             const email = response?.data?.email;
             localStorage.setItem('token', token);
             setAuth({role,email,token,isAuthenticated:true});
-            navigation('/mostPopulaire');
+            setIsActiveLogin(false)
+            if(role === "CLIENT") {
+                navigation('/mostPopulaire')
+            } else {
+                if (role == "ADMIN") {
+                    navigation('/admin')
+                } else {
+                    if (role == "BIBLIOTHECAIRE") {
+                        navigation('/documents')
+                    }
+                }
+            }
         } catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -54,7 +64,7 @@ const Login = (props) => {
             <h1 className="text-xl text-center ">Se Connecter</h1>
             <form  className="flex flex-col gap-4 " onSubmit={handleSubmit}>
                 {error && <p className="text-red-600 text-[12px] font-normal text-left">{error}</p>}
-                <input className="pl-2 w-72 font-normal py-2 rounded text-md focus:outline-none" value={email} type="email" placeholder="Username" onChange={(e) => setEmail(e.target.value)} />
+                <input className="pl-2 w-72 font-normal py-2 rounded text-md focus:outline-none" value={email} type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                 <input className="pl-2 font-normal py-2 rounded text-md focus:outline-none" value={password} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                 <button type="submit" className="bg-[#564592] text-white py-2 px-6 rounded-md">Login</button>
             </form>

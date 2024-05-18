@@ -9,13 +9,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BibliothecaireDto {
-    private Long id;
-    private String nom;
-    private String prenom;
-    private String email;
-    private String telephone;
-    private String cin;
-    private Date naissance;
+public class BibliothecaireDto extends UtilisateurDto {
     private Long idBibliotheque;
+    private String status;
 }

@@ -19,5 +19,7 @@ public class UtilisateurDto {
     private String telephone;
     private String cin;
     private String role;
+    private String addresse;
+    private boolean estRegistered;
     private Date naissance;
 }

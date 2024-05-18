@@ -12,4 +12,6 @@ public class NotificationDto {
     private String message;
     private UtilisateurDto emeteur;
     private String idRecepteur;
+    private int montant;
+    private String type;
 }

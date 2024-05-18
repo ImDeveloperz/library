@@ -7,8 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface BibliothecaireMapper {
-    @Mapping(source = "id", target = "id")
     @Mapping(source = "bibliotheque.id", target = "idBibliotheque")
+    @Mapping(source = "status", target = "status")
     BibliothecaireDto toDto(Bibliothecaire bibliothecaire);
     Bibliothecaire toEntity(BibliothecaireDto bibliothecaireDto);
 }

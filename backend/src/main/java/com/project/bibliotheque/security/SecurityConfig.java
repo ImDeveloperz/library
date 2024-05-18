@@ -70,7 +70,7 @@ public class SecurityConfig {
         return hhtpSecurity
                 .sessionManagement(sm->sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(ar->ar.requestMatchers("/auth/**").permitAll())
+                .authorizeHttpRequests(ar->ar.requestMatchers("/auth/login","/auth/register").permitAll())
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                 .oauth2ResourceServer(oa->oa.jwt(Customizer.withDefaults()))
                 .build();

@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Avatar} from "@nextui-org/react";
+import {Avatar} from "@nextui-org/react";
 import useAuth from "../hook/useAuth.js";
 import axios from "../api/axios.js";
 import { MdEmail,MdSettings } from "react-icons/md";
-import { IoLogOut } from "react-icons/io5";
 import {useAtom} from "jotai";
 import {isActiveProfile} from "../context/GlobalProvider.jsx";
 import {Divider} from "@nextui-org/divider";
 import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
+import {useNavigate} from "react-router-dom";
 const Profile = () => {
-    const {auth} = useAuth();
-    console.log(auth)
+    const {auth,logout} = useAuth();
+    const navigate = useNavigate()
     const [user, setUser] = useState({});
     const [isActiveProfil, setIsActiveProfile] = useAtom(isActiveProfile);
     //get user
@@ -33,12 +33,16 @@ const Profile = () => {
     return(
         <div className="relative">
             <div>
-                <Avatar showFallback isBordered color="secondary" onClick={() => {
-                    setIsActiveProfile(!isActiveProfil)
-                }} src='https://images.unsplash.com/broken'/>
+                {
+                    user.imageUrl ? <Avatar className="cursor-pointer"  showFallback isBordered onClick={
+                        () => setIsActiveProfile(!isActiveProfil)
+                        } color="secondary" src={user.imageUrl}/> :
+                        <Avatar className="cursor-pointer" showFallback isBordered onClick={
+                            () => setIsActiveProfile(!isActiveProfil)} color="secondary" src='https://images.unsplash.com/broken'/>
+                }
             </div>
             {isActiveProfil ?
-                <div className="min-w-72 text-black bg-white rounded-md  right-[2px] top-14 z-10 absolute pb-3  pt-4 flex flex-col ">
+                <div className="min-w-72 z-40 text-black bg-white rounded-md  right-[2px] top-14 border  absolute pb-3  pt-4 flex flex-col ">
                     <div className="triangle absolute  -top-2 right-0"></div>
                     <div className='flex gap-3  px-6'>
                         <Avatar showFallback isBordered color="secondary" src='https://images.unsplash.com/broken'/>
@@ -49,7 +53,9 @@ const Profile = () => {
                     </div>
                     <Divider className="my-4"/>
                     <div className="flex  flex-col">
-                        <div className="flex cursor-pointer p-2 hover:bg-gray-300 text-[14px] font-medium items-center px-6 gap-2 ">
+                        <div onClick={()=>{
+                            navigate("/profile", { replace: true })
+                        }} className="flex cursor-pointer p-2 hover:bg-gray-300 text-[14px] font-medium items-center px-6 gap-2 ">
                             <CgProfile className="text-[18px] font-bold "/>
                             <p>Profile</p>
                         </div>
@@ -59,7 +65,9 @@ const Profile = () => {
                         </div>
                     </div>
                     <Divider className="my-4"/>
-                    <div className="flex text-[14px] font-medium gap-2 cursor-pointer p-2 hover:bg-gray-300  items-center px-6">
+                    <div onClick={()=>{
+                        logout()
+                    }} className="flex text-[14px] font-medium gap-2 cursor-pointer p-2 hover:bg-gray-300  items-center px-6">
                         <TbLogout2 className="text-[18px] "/>
                         <p>Deconnecter</p>
                     </div>

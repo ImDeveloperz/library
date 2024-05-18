@@ -23,5 +23,4 @@ public class Location extends Transaction {
     private Date dateFin;
     private int fraixExige;
     private int amountRetard;
-
 }

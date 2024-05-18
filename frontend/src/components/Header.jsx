@@ -9,7 +9,7 @@ const Header = () => {
     const [isActiveRegisted, setIsActiveRegister] = useAtom(isActiveRegister);
     return (
         <div className={`h-[100%] flex-col flex gap-y-14  items-center justify-center`} >
-                <h1 className="font-bold md:text-4xl sm:text-3xl text-center text-2xl  w-2/3">
+                <h1 className="font-bold shd md:text-4xl sm:text-3xl text-center text-2xl  w-2/3">
                     Découvrer l'univers des documents avec notre bibliothèque
                 </h1>
                 <div className="flex items-center justify-center gap-2">

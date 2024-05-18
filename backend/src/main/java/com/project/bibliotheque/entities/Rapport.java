@@ -22,9 +22,10 @@ public class Rapport {
     private String statistique;
     private Date dateStatistique;
     private String typeStatistique;
-    private int nombrePret;
-    private int nombreRetard;
-    private int nombreReservation;
+    private int nombrePret = 0;
+    private int nombreRetard = 0;
+    private int nombreReservation = 0;
+    private int nombreLocation = 0;
     @ManyToOne
     @JoinColumn(name = "document_id")
     private Document document;

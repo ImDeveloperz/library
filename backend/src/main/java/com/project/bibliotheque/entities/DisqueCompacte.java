@@ -18,5 +18,4 @@ public class DisqueCompacte extends Document {
     @Enumerated(EnumType.STRING)
     private FormatExtention format ;
     private int duree;
-
 }

@@ -6,7 +6,13 @@ import com.project.bibliotheque.services.NotificationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/notifications")
@@ -36,6 +42,51 @@ public class NotificationController {
     @PostMapping
     public NotificationDto addNotification(NotificationDto notificationDto){
         return notificationService.addNotification(notificationDto);
+    }
+    @PostMapping("/sendFromLocation")
+    public Notification sendNotification(@RequestBody Map<Object,Object> body){
+        String message = (String) body.get("message");
+        Long recepteurId = Long.parseLong(body.get("userId").toString());
+        String emetteurEmail = (String) body.get("bibliothecaireEmail");
+        LocalDate dateDebut = null;
+        Object dateDebutObj = body.get("dateDepart");
+        if (dateDebutObj instanceof LocalDate) {
+            dateDebut = (LocalDate) dateDebutObj;
+        } else if (dateDebutObj instanceof String) {
+            dateDebut = LocalDate.parse((String) dateDebutObj);
+        }
+        LocalDate dateFin = null;
+        Object dateFinObj = body.get("dateRetour");
+        if (dateFinObj instanceof LocalDate) {
+            dateFin = (LocalDate) dateFinObj;
+        } else if (dateDebutObj instanceof String) {
+            dateFin = LocalDate.parse((String) dateFinObj);
+        }
+        Long documentId = Long.parseLong(body.get("documentId").toString());
+        assert dateFin != null;
+        return notificationService.sendNotificationFromLocation(message, recepteurId, emetteurEmail, dateDebut, dateFin, documentId);
+    }
+    @PostMapping("/sendFromPret")
+    public Notification sendNotificationFromPret(@RequestBody Map<Object,Object> body){
+        String message = (String) body.get("message");
+        Long recepteurId = Long.parseLong(body.get("userId").toString());
+        String emetteurEmail = (String) body.get("bibliothecaireEmail");
+        LocalDate dateDebut = null;
+        Object dateDebutObj = body.get("dateDepart");
+        if (dateDebutObj instanceof LocalDate) {
+            dateDebut = (LocalDate) dateDebutObj;
+        } else if (dateDebutObj instanceof String) {
+            dateDebut = LocalDate.parse((String) dateDebutObj);
+        }
+        LocalDate dateFin = null;
+        Object dateFinObj = body.get("dateRetour");
+        if (dateFinObj instanceof LocalDate) {
+            dateFin = (LocalDate) dateFinObj;
+        } else if (dateDebutObj instanceof String) {
+            dateFin = LocalDate.parse((String) dateFinObj);
+        }
+        Long documentId = Long.parseLong(body.get("documentId").toString());
+        return notificationService.sendNotificationFromPretation(message, recepteurId, emetteurEmail, dateDebut, dateFin, documentId);
     }
     @PutMapping("/{id}")
     public NotificationDto updateNotification(Long id, NotificationDto notificationDto){

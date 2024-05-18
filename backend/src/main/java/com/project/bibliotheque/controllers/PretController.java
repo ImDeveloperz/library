@@ -1,39 +1,51 @@
 package com.project.bibliotheque.controllers;
 
 
+import com.project.bibliotheque.dtos.PretDto;
+import com.project.bibliotheque.entities.CarteClient;
+import com.project.bibliotheque.entities.Document;
 import com.project.bibliotheque.entities.Pret;
+import com.project.bibliotheque.repositories.CartClientRepository;
+import com.project.bibliotheque.repositories.DocumentRepository;
 import com.project.bibliotheque.services.PretService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/prets")
 public class PretController {
     private final PretService pretService;
-
-    public PretController(PretService pretService) {
+    private final CartClientRepository cartClientRepository;
+    private final DocumentRepository documentRepository;
+    public PretController(PretService pretService,DocumentRepository documentRepository,CartClientRepository cartClientRepository){
         this.pretService = pretService;
+        this.cartClientRepository = cartClientRepository;
+        this.documentRepository = documentRepository;
     }
     @GetMapping
-    public List<Pret> getAllPrets(){
+    public List<PretDto> getAllPrets(){
         return pretService.getAllPrets();
     }
     @GetMapping("/{id}")
     public Pret getPretById(Long id){
         return pretService.getPretById(id);
     }
-    @PostMapping
-    public Pret addPret(Pret pret){
-        return pretService.addPret(pret);
-    }
     @PutMapping("/{id}")
     public Pret updatePret(Long id, Pret pret){
         pret.setIdTransaction(id);
         return pretService.updatePret(pret);
     }
-    @DeleteMapping("/{id}")
-    public void deletePretById(Long id){
+    @DeleteMapping
+    public void deletePretById(@RequestParam Long id){
+        //getPretById(id);
+        Pret pret = pretService.getPretById(id);
+        CarteClient carteClient = pret.getCarteClient();
+        carteClient.setNbrEmprunte(carteClient.getNbrEmprunte() - 1);
+        Document document = pret.getDocument();
+        cartClientRepository.save(carteClient);
+        documentRepository.save(document);
+        document.setNombreExemplaire(document.getNombreExemplaire() + 1);
         pretService.deletePretById(id);
     }
 }

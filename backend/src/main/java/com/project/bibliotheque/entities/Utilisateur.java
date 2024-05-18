@@ -27,10 +27,14 @@ public class Utilisateur {
     private String telephone;
     private String cin;
     private String imageUrl;
+    private String addresse;
     @Temporal(TemporalType.DATE)
     private Date naissance;
+    private boolean estRegistered = false;
     @OneToMany(mappedBy = "emeteur")
     private List<Notification> notificationsEmeteur;
     @OneToMany(mappedBy = "recepteur")
     private List<Notification> notificationsRecepteur;
+    @OneToOne(mappedBy = "client")
+    private CarteClient carteClient;
 }

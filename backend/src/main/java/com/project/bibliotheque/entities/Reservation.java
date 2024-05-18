@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -20,4 +21,9 @@ import java.util.Date;
 public class Reservation extends Transaction {
     @Temporal(TemporalType.DATE)
     private Date dateReservation;
+    @Temporal(TemporalType.TIME)
+    private Time heureReservation;
+    private String typeReservation;
+    private String statue = "EnTraitement";
+
 }
