@@ -24,6 +24,7 @@ public interface DocumentMapper {
     @Mapping(source = "datePublication", target = "datePublication")
     @Mapping(source = "langue", target = "langue")
     @Mapping(source = "estPretable", target = "estPretable")
+
     DocumentDto toDto(Document document);
     Document toEntity(DocumentDto documentDto);
 }

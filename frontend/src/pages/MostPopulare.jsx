@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import { Navigate } from 'react-router-dom';
 import {useAtom}  from "jotai";
 import useAuth from "../hook/useAuth.js";
 import NavbarLayout from "../components/NavbarLayout.jsx";
@@ -49,7 +48,6 @@ const MostPopulare = (props) => {
             console.log(e)
         }
     }
-
     useEffect(() => {
         if(auth.token){getDocs().then(r => r).catch(e => e);}
     }, [auth,page,search]);

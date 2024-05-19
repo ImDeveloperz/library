@@ -1,10 +1,7 @@
 package com.project.bibliotheque.controllers;
 
 import com.project.bibliotheque.dtos.ReservationDto;
-import com.project.bibliotheque.entities.CarteClient;
-import com.project.bibliotheque.entities.Document;
-import com.project.bibliotheque.entities.Location;
-import com.project.bibliotheque.entities.Reservation;
+import com.project.bibliotheque.entities.*;
 import com.project.bibliotheque.repositories.DocumentRepository;
 import com.project.bibliotheque.repositories.PretRepository;
 import com.project.bibliotheque.repositories.ReservationRepository;
@@ -13,6 +10,7 @@ import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,8 +26,8 @@ public class ReservationController {
     private final LocationService locationService;
     private final CarteClientService carteClientService;
     private final DocumentService documentService;
-
-    public ReservationController(ReservationService reservationService, DocumentRepository documentRepository, ReservationRepository reservationRepository, PretService pretService, LocationService locationService, CarteClientService carteClientService, DocumentService documentService) {
+    private final RapportService rapportService;
+    public ReservationController(ReservationService reservationService, DocumentRepository documentRepository, ReservationRepository reservationRepository, PretService pretService, LocationService locationService, CarteClientService carteClientService, DocumentService documentService, RapportService rapportService) {
         this.reservationService = reservationService;
         this.reservationRepository = reservationRepository;
         this.documentRepository = documentRepository;
@@ -37,6 +35,7 @@ public class ReservationController {
         this.locationService = locationService;
         this.carteClientService = carteClientService;
         this.documentService = documentService;
+        this.rapportService = rapportService;
     }
 
     @GetMapping
@@ -52,6 +51,7 @@ public class ReservationController {
         Long idCart = request.getIdCart();
         Long idDocument = request.getIdDocument();
         String type = request.getType();
+        rapportService.addRapport(new Date(), "reservation", idDocument);
         return reservationService.addReservation(idDocument, idCart, type);
     }
     @PutMapping("/statue")
@@ -66,10 +66,12 @@ public class ReservationController {
                 if(reservationDto.getTypeReservation().toLowerCase().compareTo("emprunter")==0){
                     pretService.addPret(documentService.getDocumentById(reservationDto.getDocumentId()), carteClientService.getCarteClientById(reservationDto.getCarteId()));
                     reservationRepository.deleteById(reservationDto.getId());
+                    rapportService.addRapport(new Date(), "emprunt", reservationDto.getDocumentId());
                     return ResponseEntity.ok(Map.of("message", "Pret ajouté avec succès"));
                 }else{
                     locationService.addLocation(documentService.getDocumentById(reservationDto.getDocumentId()), carteClientService.getCarteClientById(reservationDto.getCarteId()));
                     reservationRepository.deleteById(reservationDto.getId());
+                    rapportService.addRapport(new Date(), "location", reservationDto.getDocumentId());
                     return ResponseEntity.ok(Map.of("message", "Location ajoutée avec succès"));
                 }
             }else{
@@ -85,10 +87,12 @@ public class ReservationController {
                 if(reservationDto.getTypeReservation().compareTo("emprunter")==0){
                     pretService.addPret(documentService.getDocumentById(reservationDto.getDocumentId()), carteClientService.getCarteClientById(reservationDto.getCarteId()));
                     reservationRepository.deleteById(reservationDto.getId());
+                    rapportService.addRapport(new Date(), "emprunt", reservationDto.getDocumentId());
                     return ResponseEntity.ok(Map.of("message", "Pret ajouté avec succès"));
                 }else{
                     locationService.addLocation(documentService.getDocumentById(reservationDto.getDocumentId()), carteClientService.getCarteClientById(reservationDto.getCarteId()));
                     reservationRepository.deleteById(reservationDto.getId());
+                    rapportService.addRapport(new Date(), "location", reservationDto.getDocumentId());
                     return ResponseEntity.ok(Map.of("message", "Location ajoutée avec succès"));
                 }
             }

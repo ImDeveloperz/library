@@ -25,5 +25,4 @@ public class Reservation extends Transaction {
     private Time heureReservation;
     private String typeReservation;
     private String statue = "EnTraitement";
-
 }

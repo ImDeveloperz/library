@@ -86,8 +86,6 @@ const Reserve = ({type, idBook}) => {
                 "Authorization": "Bearer " + auth.token,
             }
         }).then(response => {
-            console.log(response.data)
-
             toast.success("Reservation effectuer avec success")
             toast.success("En va  envouyer un message aprés quelque heures si le document est disponuble sinon vous pouvez attendre le message de confirmation")
         }).catch(error => {

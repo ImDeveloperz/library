@@ -16,11 +16,9 @@ import { MdDelete } from "react-icons/md";
 import {SearchIcon} from "../utils/SearchIcon.jsx";
 import {ChevronDownIcon} from "../utils/ChevronDownIcon.jsx";
 import {capitalize} from "../utils/utils.js";
-import AddBibliothecaire from "../admin/AddBibliothecaire.jsx";
-import NavbarLayout from "../NavbarLayout.jsx";
 import axios from "../../api/axios.js";
-import documents from "../../pages/Documents.jsx";
 import useAuth from "../../hook/useAuth.js";
+import toast from "react-hot-toast";
 
 const statusColorMap = {
     PretAetreRecuperer: "success",
@@ -32,7 +30,7 @@ const INITIAL_VISIBLE_COLUMNS = ["id","nomUser","client","titreDocument", "dateR
 
 const Reservations = (props) => {
     const {auth} = useAuth()
-    const [isChanged,setChaged] = React.useState(false)
+    const [isChanged,setIsChanged] = React.useState(false)
     const [reservations,setReservation] = React.useState([]);
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -99,7 +97,8 @@ const Reservations = (props) => {
                 }
             })
             console.log(response.data)
-            setChaged(!isChanged)
+            getReservations();
+            toast.success("Document valider avec Sucees")
         }catch (e){
               console.log(e);
         }

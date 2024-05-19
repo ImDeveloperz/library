@@ -15,44 +15,38 @@ import {
     DropdownItem,
     Chip,
     User,
-    Pagination, useDisclosure, ModalContent, Modal, ModalBody, ModalFooter, ModalHeader,
+    Pagination,
 } from "@nextui-org/react";
 import {VerticalDotsIcon} from "../components/utils/VerticalDotsIcon.jsx";
 import {ChevronDownIcon} from "../components/utils/ChevronDownIcon.jsx";
-import {PlusIcon} from "../components/utils/PlusIcon.jsx";
 import {capitalize} from "../components/utils/utils.js";
-import {columns, statusOptions} from "../components/data/dataBibliothecires.js";
+import {columns} from "../components/data/dataStatistiques.js";
 import {SearchIcon} from "../components/utils/SearchIcon.jsx";
 import axios from "../api/axios.js";
 import useAuth from "../hook/useAuth.js";
 import AddBibliothecaire from "../components/admin/AddBibliothecaire.jsx";
+import Pdf from "../components/documents/Pdf.jsx";
 
-const statusColorMap = {
-    active: "success",
-    paused: "danger",
-    vacation: "warning",
-};
-
-const INITIAL_VISIBLE_COLUMNS = ["id","nom", "email", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["id","documentTitre", "nombrePret", "nombreRetour", "nombrePerdu", "nombreReservation", "nombreLocation", "dateStatistique"];
 const Admin = (props) => {
     const [isChanged, setIsChanged] = React.useState(false);
+    const [statistiques, setStatistiques] = React.useState([]);
     const {auth} = useAuth();
-    const [users,setUsers] = React.useState([]);
-    const getUsers = async () => {
+    const getStatistiques = async () => {
         try{
-            const response = await axios.get('/bibliothecaire',{
+            const response = await axios.get('/rapports',{
                 headers:{
                     "Authorization" : "Bearer " + auth.token
                 }
             });
-            setUsers(response.data);
+            setStatistiques(response.data);
             console.log(response.data)
         }catch (e) {
             console.log(e)
         }
     }
     useEffect(() => {
-        getUsers().then(r => r).catch(e => e);
+        getStatistiques().then(r => r).catch(e => e);
     }, [auth,isChanged]);
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -65,7 +59,7 @@ const Admin = (props) => {
     });
     const [page, setPage] = React.useState(1);
 
-    const pages = Math.ceil(users.length / rowsPerPage);
+    const pages = Math.ceil(statistiques.length / rowsPerPage);
 
     const hasSearchFilter = Boolean(filterValue);
 
@@ -76,11 +70,11 @@ const Admin = (props) => {
     }, [visibleColumns]);
 
     const filteredItems = React.useMemo(() => {
-        let filteredUsers = [...users];
+        let filteredUsers = [...statistiques];
 
         if (hasSearchFilter) {
-            filteredUsers = filteredUsers.filter((user) =>
-                user.nom.toLowerCase().includes(filterValue.toLowerCase()),
+            filteredUsers = filteredUsers.filter((statisique) =>
+                statisique.documentTitre.toLowerCase().includes(filterValue.toLowerCase()),
             );
         }
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
@@ -90,7 +84,7 @@ const Admin = (props) => {
         }
 
         return filteredUsers;
-    }, [users, filterValue, statusFilter]);
+    }, [statistiques, filterValue, statusFilter]);
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -193,7 +187,7 @@ const Admin = (props) => {
                             base: "w-full sm:max-w-[44%]",
                             inputWrapper: "border-1",
                         }}
-                        placeholder="Search by name..."
+                        placeholder="Recherche Par Titre du Document..."
                         size="sm"
                         startContent={<SearchIcon className="text-default-300" />}
                         value={filterValue}
@@ -202,32 +196,6 @@ const Admin = (props) => {
                         onValueChange={onSearchChange}
                     />
                     <div className="flex text-black gap-3">
-                        <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button
-                                    endContent={<ChevronDownIcon className="text-small" />}
-                                    size="sm"
-                                    variant="flat"
-                                >
-                                    Status
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={statusFilter}
-                                selectionMode="multiple"
-                                className="text-black"
-                                onSelectionChange={setStatusFilter}
-                            >
-                                {statusOptions.map((status) => (
-                                    <DropdownItem key={status.uid} className="capitalize">
-                                        {capitalize(status.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
                         <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
                                 <Button
@@ -254,11 +222,10 @@ const Admin = (props) => {
                                 ))}
                             </DropdownMenu>
                         </Dropdown>
-                        <AddBibliothecaire isChanged={isChanged} setIsChanged={setIsChanged} />
                     </div>
                 </div>
                 <div className="flex text-black justify-between items-center">
-                    <span className="text-default-400 text-small">Total {users.length} users</span>
+                    <span className="text-default-400 text-small">Total {statistiques.length} Statistiqes</span>
                     <label className="flex items-center text-default-400 text-small">
                         Rows per page:
                         <select
@@ -279,7 +246,7 @@ const Admin = (props) => {
         visibleColumns,
         onSearchChange,
         onRowsPerPageChange,
-        users.length,
+        statistiques.length,
         hasSearchFilter,
     ]);
 
@@ -288,14 +255,12 @@ const Admin = (props) => {
             <div className="py-2 px-2 flex justify-center items-center">
                 <Pagination
                     showControls
-                    classNames={{
-                        cursor: "bg-foreground  text-background",
-                    }}
-                    color="default"
+                    color="secondary"
                     isDisabled={hasSearchFilter}
                     page={page}
                     total={pages}
-                    variant="light"
+                    variant="flat"
+                    size="sm"
                     onChange={setPage}
                 />
 
@@ -323,11 +288,12 @@ const Admin = (props) => {
     );
     return(
         <NavbarLayout>
-            <div>
+            <div >
                 <h1 className="text-3xl py-4 font-semibold">Gestion Des Statistiques</h1>
-                <div className="bg-white rounded-md mt-2 p-6 text-black">
+                <div  className="bg-white rounded-md mt-2 p-6 text-black">
                     <Table
-                        isCompact
+                        id="statistiques"
+                        isStriped={true}
                         removeWrapper
                         aria-label="Example table with custom cells, pagination and sorting"
                         bottomContent={bottomContent}
@@ -337,6 +303,7 @@ const Admin = (props) => {
                                 wrapper: "after:bg-foreground after:text-background text-background",
                             },
                         }}
+                        color="secondary"
                         classNames={classNames}
                         sortDescriptor={sortDescriptor}
                         topContent={topContent}
@@ -355,7 +322,7 @@ const Admin = (props) => {
                                 </TableColumn>
                             )}
                         </TableHeader>
-                        <TableBody emptyContent={"No users found"} items={sortedItems}>
+                        <TableBody  emptyContent={"No users found"} items={sortedItems}>
                             {(item) => (
                                 <TableRow key={item.id}>
                                     {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -364,6 +331,13 @@ const Admin = (props) => {
                         </TableBody>
                     </Table>
                 </div>
+                <Button className="bg-[#564592] text-white mt-3 " onClick={
+                    ()=>{
+                        Pdf("statistiques")
+                    }
+                } >
+                    Imprimer les statistiques
+                </Button>
             </div>
         </NavbarLayout>
     )

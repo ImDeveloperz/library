@@ -113,7 +113,7 @@ const Pretations = (props) => {
                 }
             })
             toast.success("Document Retourner avec Sucees")
-            setChaged(!isChanged)
+            getPretations()
         }catch (e){
             console.log(e);
         }

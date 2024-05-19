@@ -14,7 +14,7 @@ import { compile } from "@onedoc/react-print";
 import Pdf from "../components/documents/Pdf.jsx";
 import ClientCarte from "../components/ClientCarte.jsx";
 import toast from "react-hot-toast";
-
+import { IoArrowBack } from "react-icons/io5";
 export function formatDate(inputDate) {
     // Parse the input date
     const date = new Date(inputDate);
@@ -28,6 +28,7 @@ export function formatDate(inputDate) {
 
 
 const BookDetails = () => {
+    const navigate = useNavigate();
     const {onClose,isOpen} = useDisclosure();
     const [client,setClient] = useState({})
     const getClient = async () => {
@@ -106,6 +107,14 @@ const BookDetails = () => {
     return(
         <NavbarLayout>
             <div className="py-6 w-full">
+                <div className="flex gap-2 items-center py-3 cursor-pointer hover:font-bold " onClick={
+                    ()=>{
+                        navigate('/mostPopulaire')
+                    }
+                }>
+                    <IoArrowBack/>
+                    <p>Retour</p>
+                </div>
                 <h1 className="text-4xl font-semibold">Document Détails</h1>
                 <div
                     className="border-white text-black mt-6 bg-white  rounded-3xl shadow-2xl md:py-8 md:px-8 px-4 py-4  w-[100] md:max-w-[100%] lg:max-w-[75%] xl:max-w-[70%] ">

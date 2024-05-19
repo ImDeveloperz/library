@@ -5,9 +5,11 @@ import com.project.bibliotheque.dtos.PretDto;
 import com.project.bibliotheque.entities.CarteClient;
 import com.project.bibliotheque.entities.Document;
 import com.project.bibliotheque.entities.Pret;
+import com.project.bibliotheque.entities.Rapport;
 import com.project.bibliotheque.repositories.CartClientRepository;
 import com.project.bibliotheque.repositories.DocumentRepository;
 import com.project.bibliotheque.services.PretService;
+import com.project.bibliotheque.services.RapportService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +20,12 @@ public class PretController {
     private final PretService pretService;
     private final CartClientRepository cartClientRepository;
     private final DocumentRepository documentRepository;
-    public PretController(PretService pretService,DocumentRepository documentRepository,CartClientRepository cartClientRepository){
+    private final RapportService rapportService;
+    public PretController(PretService pretService,DocumentRepository documentRepository,CartClientRepository cartClientRepository,RapportService rapportService){
         this.pretService = pretService;
         this.cartClientRepository = cartClientRepository;
         this.documentRepository = documentRepository;
+        this.rapportService = rapportService;
     }
     @GetMapping
     public List<PretDto> getAllPrets(){
@@ -44,6 +48,7 @@ public class PretController {
         carteClient.setNbrEmprunte(carteClient.getNbrEmprunte() - 1);
         Document document = pret.getDocument();
         cartClientRepository.save(carteClient);
+        rapportService.addRapport(new java.util.Date(), "retour", document.getIdDocument());
         documentRepository.save(document);
         document.setNombreExemplaire(document.getNombreExemplaire() + 1);
         pretService.deletePretById(id);

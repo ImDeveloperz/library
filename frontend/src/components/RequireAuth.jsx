@@ -8,11 +8,13 @@ const RequireAuth = ({allowedRoles, path} ) => {
     const { auth } = useAuth();
     const location = useLocation();
     const navigation = useNavigate()
-    console.log("path : ",path)
-    console.log("allowedRole : ",allowedRoles)
+    console.log("path:",path)
+    console.log("location:",location.pathname)
+    console.log("allowedRole:",allowedRoles)
     console.log("auth : ",auth)
     useEffect(() => {
         if(path === "/" && auth.role!=="GUEST") {
+            console.log("client")
             switch (auth.role){
                 case "CLIENT" :
                     navigation("/mostPopulaire")
@@ -25,7 +27,8 @@ const RequireAuth = ({allowedRoles, path} ) => {
                     break;
             }
         }
-    }, []);
+        console.log("r")
+    }, [location.pathname]);
        return (
            ( auth?.role === allowedRoles )
                ? <Outlet />

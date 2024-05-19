@@ -7,7 +7,10 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface RapportMapper {
+    @Mapping(source = "idRapport", target = "id")
+    @Mapping(source = "dateStatistique", target = "dateStatistique")
     @Mapping(source = "document.idDocument", target = "documentId")
+    @Mapping(source = "document.titre", target = "documentTitre")
     RapportDto toDto(Rapport rapport);
     Rapport toEntity(RapportDto rapportDto);
 }

@@ -17,9 +17,11 @@ const Pdf = async (componentId) => {
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF();
     pdf.addImage(imgData, 'JPEG', 0, 0);
-    const imageUrl = document.getElementById("profile").getElementsByTagName("img")[0].src;
-    const imageData = await getImageData(imageUrl);
-    pdf.addImage(imageData, 'JPEG', 85, 18 , 20, 20);
+    if(componentId === "carte") {
+        const imageUrl = document.getElementById("profile").getElementsByTagName("img")[0].src;
+        const imageData = await getImageData(imageUrl);
+        pdf.addImage(imageData, 'JPEG', 85, 18 , 20, 20);
+    }
     pdf.save("download.pdf");
 }
 

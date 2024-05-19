@@ -20,12 +20,14 @@ public class Rapport {
     @GeneratedValue(strategy = GenerationType.TABLE )
     private Long idRapport;
     private String statistique;
+    @Temporal(TemporalType.DATE)
     private Date dateStatistique;
     private String typeStatistique;
     private int nombrePret = 0;
-    private int nombreRetard = 0;
+    private int nombrePerdu = 0;
     private int nombreReservation = 0;
     private int nombreLocation = 0;
+    private int nombreRetour = 0;
     @ManyToOne
     @JoinColumn(name = "document_id")
     private Document document;

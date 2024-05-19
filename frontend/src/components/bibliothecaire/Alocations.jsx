@@ -41,7 +41,7 @@ const Alocations = (props) => {
         direction: "ascending",
     });
     const [docs,getDocs] = React.useState([]);
-
+    
     const [page, setPage] = React.useState(1);
 
     const pages = Math.ceil(locations.length / rowsPerPage);
@@ -108,8 +108,8 @@ const Alocations = (props) => {
                     "Authorization": "Bearer " + auth.token
                 }
             })
+            getLocations()
             toast.success("Document Retourner avec Sucees")
-            setChaged(!isChanged)
         }catch (e){
             console.log(e);
         }
