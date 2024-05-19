@@ -69,11 +69,14 @@ const Notification = (props) => {
                                                 <div>
                                                     <div
                                                         className="flex pt-4 p-2 rounded  px-6 gap-3 cursor-pointer hover:bg-gray-300">
-                                                        <Avatar showFallback isBordered size="sm" color="secondary"
-                                                                src='https://images.unsplash.com/broken'/>
+                                                        {
+                                                            item.emeteur?.imageUrl ? <Avatar size="sm"  showFallback isBordered color="secondary" src={item.emeteur.imageUrl}/> :
+                                                                <Avatar className=" " size="sm" showFallback isBordered  color="secondary" src='https://images.unsplash.com/broken'/>
+                                                        }
                                                         <div className="flex flex-col items-center  ">
                                                             <p className="text-[10px] font-semibold ">{item?.emeteur?.prenom} {item?.emeteur?.nom}</p>
                                                             <p className="text-[10px]">{item.message}</p>
+                                                            <p className="text-[10px] ">montant : {item.montant} Dh</p>
                                                         </div>
                                                     </div>
                                                     <Divider className="my-4"/>

@@ -22,6 +22,6 @@ public class TransactionDto {
     private String titreDocument;//titre du document
     private String email;
     private Long userId;
-
+    private String type;
 }
 

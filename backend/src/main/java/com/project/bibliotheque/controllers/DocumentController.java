@@ -4,6 +4,7 @@ import com.project.bibliotheque.dtos.DocumentDto;
 import com.project.bibliotheque.entities.*;
 import com.project.bibliotheque.repositories.*;
 import com.project.bibliotheque.services.DocumentService;
+import com.project.bibliotheque.services.RapportService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,10 @@ public class DocumentController {
     private final DisqueCompacteRepository disqueCompacteRepository;
     private final PeriodiqueRepository periodiqueRepository;
     private final DiscripteurRepository discripteurRepository;
-    public DocumentController(DocumentService documentService, DiscripteurRepository discripteurRepository, LivreRepository livreRepository, JournaleRepository journaleRipositry,DisqueCompacteRepository disqueCompacteRepository,CasseteVideoRepository casseteVideoRepository , PeriodiqueRepository periodiqueRepository){
+    private final RapportService rapportService;
+    private final DocumentRepository documentRepository;
+
+    public DocumentController(DocumentService documentService, DiscripteurRepository discripteurRepository, LivreRepository livreRepository, JournaleRepository journaleRipositry, DisqueCompacteRepository disqueCompacteRepository, CasseteVideoRepository casseteVideoRepository , PeriodiqueRepository periodiqueRepository, RapportService rapportService, DocumentRepository documentRepository){
         this.documentService = documentService;
         this.discripteurRepository = discripteurRepository;
         this.livreRepository = livreRepository;
@@ -33,6 +37,8 @@ public class DocumentController {
         this.disqueCompacteRepository = disqueCompacteRepository;
         this.casseteVideoRepository = casseteVideoRepository;
         this.periodiqueRepository = periodiqueRepository;
+        this.rapportService = rapportService;
+        this.documentRepository = documentRepository;
     }
     @GetMapping("/{id}")
     public DocumentDto getDocumentById(@PathVariable Long id){
@@ -42,6 +48,14 @@ public class DocumentController {
     @GetMapping
     public Page<DocumentDto> getAllDocuments(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size,@RequestParam(defaultValue = "") String search){
         return documentService.getAllDocuments(page,size,search);
+    }
+    @GetMapping("/type")
+    public Page<DocumentDto> getDocumentsByType(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size,@RequestParam(defaultValue = "") String search,@RequestParam String type){
+        return documentService.getDocumentsByType(page,size,search,type);
+    }
+    @GetMapping("/language")
+    public Page<DocumentDto> getDocumentsByLangue(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size,@RequestParam(defaultValue = "") String search,@RequestParam String langue){
+        return documentService.getDocumentsByLangue(page,size,search,langue);
     }
     @GetMapping("/search")
     public Page<DocumentDto> getDocumentsByTitreContaining(@RequestParam String titre, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size){
@@ -187,6 +201,15 @@ public class DocumentController {
     public DocumentDto updateDocument(@PathVariable Long id, @RequestBody DocumentDto documentDto){
         documentDto.setIdDocument(id);
         return documentService.updateDocument(documentDto);
+    }
+    @PutMapping("/perdu")
+    public ResponseEntity<Map<String,String>> setDocumentPerdu(@RequestParam Long id){
+        Document document = documentRepository.findById(id).orElse(null);
+        document.setNombreExemplaire(document.getNombreExemplaire()-1);
+        documentRepository.save(document);
+
+        rapportService.addRapport(new Date(), "perdu", document.getIdDocument());
+        return ResponseEntity.ok(Map.of("message", "exmemplaire marqué comme perdu"));
     }
     @DeleteMapping("/{id}")
     public void deleteDocumentById(@PathVariable Long id){

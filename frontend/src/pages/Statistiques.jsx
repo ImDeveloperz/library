@@ -24,7 +24,6 @@ import {columns} from "../components/data/dataStatistiques.js";
 import {SearchIcon} from "../components/utils/SearchIcon.jsx";
 import axios from "../api/axios.js";
 import useAuth from "../hook/useAuth.js";
-import AddBibliothecaire from "../components/admin/AddBibliothecaire.jsx";
 import Pdf from "../components/documents/Pdf.jsx";
 
 const INITIAL_VISIBLE_COLUMNS = ["id","documentTitre", "nombrePret", "nombreRetour", "nombrePerdu", "nombreReservation", "nombreLocation", "dateStatistique"];
@@ -288,11 +287,12 @@ const Admin = (props) => {
     );
     return(
         <NavbarLayout>
-            <div >
+            <div className="mb-6" >
                 <h1 className="text-3xl py-4 font-semibold">Gestion Des Statistiques</h1>
                 <div  className="bg-white rounded-md mt-2 p-6 text-black">
                     <Table
                         id="statistiques"
+                        isCompact={true}
                         isStriped={true}
                         removeWrapper
                         aria-label="Example table with custom cells, pagination and sorting"

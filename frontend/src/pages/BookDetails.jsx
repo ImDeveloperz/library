@@ -101,6 +101,7 @@ const BookDetails = () => {
 
     useEffect( () => {
         getBook()
+        console.log(doc)
         getClient()
     }, []);
 
@@ -138,7 +139,7 @@ const BookDetails = () => {
                             </div>
                             <div className="md:flex items-center gap-2">
                                 <p className=" text-[16px] text-[#4A4E69] font-semibold">Genres : <span
-                                    className=" text-[15px]  text-black font-medium">Roman, Policier, Policier, Fiction</span>
+                                ></span>
                                 </p>
                             </div>
                             <div className="md:flex items-center gap-2">
@@ -186,7 +187,7 @@ const BookDetails = () => {
                                             <Tooltip color="secondary" content="vous avez depasser la limite du 5 documents" size="sm" >
                                                 <div className="w-[40%]  cursor-not-allowed ">
                                                     <Button isDisabled  className="border w-full focus:outline-none bg-[#564592] flex items-center justify-center button-36  py-3 hover:bg-[#4A4E69]  hover:shadow-blue-800 text-white  rounded-md  font-semibold text-[13px] px-10 ">
-                                                        Emprinter
+                                                        Emprunter
                                                     </Button>
                                                 </div>
                                             </Tooltip>

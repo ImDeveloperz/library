@@ -153,8 +153,8 @@ const Documents = (props) => {
                     className="items-center gap-4 mt-4 w-full grid md:grid-cols-3 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 ">
                     {docs ?
                         docs?.map(doc => (
-                            <Book key={doc?.idDocument} id={doc?.idDocument} imageUrl={doc?.imgUrl} type={doc?.type}
-                                  url={"/GestionDocs"} Author={doc?.auteur} date={doc?.datePublication} titre={doc?.titre}/>
+                            <Book key={doc?.idDocument} id={doc?.idDocument} isChanged={isChanged} setIsChanged={setIsChanged}  imageUrl={doc?.imgUrl} type={doc?.type}
+                                  url={"/GestionDocs"} Author={doc?.auteur} date={doc?.datePublication} titre={doc?.titre} nbrExemplaire={doc?.nombreExemplaire}/>
                         )) : <div> Aucun document trouver</div>
                     }
                 </div>
@@ -162,7 +162,7 @@ const Documents = (props) => {
                     docs.length > 0 && <div className="m-8 flex items-center justify-center   ">
                         <Pagination loop showControls onChange={(page) => {
                             setPage(page - 1)
-                        }} color="secondary" total={nbPages} page={page + 1} initialPage={1}/>
+                        }} color="secondary" total={nbPages} page={page + 1} initialPage={1} />
                     </div>
                 }
             </div>

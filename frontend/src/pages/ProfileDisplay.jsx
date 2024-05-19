@@ -42,8 +42,10 @@ const ProfileDisplay = (props) =>{
                     <div className="flex gap-5 w-full" >
                         <div className="py-5 w-full text-black mt-4 px-5 bg-white rounded-xl">
                             <div className="flex gap-4 items-center">
-                                <Avatar showFallback isBordered className="w-24 h-24" size="lg" color="secondary"
-                                        src='https://images.unsplash.com/broken'/>
+                                {
+                                    user.imageUrl ? <Avatar className=" h-32 w-32 "  showFallback isBordered color="secondary" src={user.imageUrl}/> :
+                                        <Avatar className=" h-32 w-32 " showFallback isBordered  color="secondary" src='https://images.unsplash.com/broken'/>
+                                }
                                 <div>
                                     <p className="text-lg font-semibold">{user.prenom} {user.nom}</p>
                                     <p className="text-sm">{user.role}</p>

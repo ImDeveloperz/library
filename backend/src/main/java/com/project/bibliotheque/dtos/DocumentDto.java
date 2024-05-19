@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,7 +20,7 @@ public class DocumentDto {
     private String type;
     private String description;
     private String imgUrl;
-    private String datePublication;
+    private Date datePublication;
     private String langue;
     private boolean estPretable;
     private Long fraixExige;

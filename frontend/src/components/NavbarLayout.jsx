@@ -31,9 +31,6 @@ const NavbarLayout = ({children}) => {
                 if(isACtiveStore){
                     setIsActiveStore(false)
                 }
-                if(isActiveProfil){
-                    setIsActiveProfile(false)
-                }
 
             }
 

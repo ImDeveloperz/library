@@ -9,6 +9,7 @@ import {Divider} from "@nextui-org/divider";
 import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import {useNavigate} from "react-router-dom";
+import EditProfile from "./EditProfile.jsx";
 const Profile = () => {
     const {auth,logout} = useAuth();
     const navigate = useNavigate()
@@ -45,7 +46,11 @@ const Profile = () => {
                 <div className="min-w-72 z-40 text-black bg-white rounded-md  right-[2px] top-14 border  absolute pb-3  pt-4 flex flex-col ">
                     <div className="triangle absolute  -top-2 right-0"></div>
                     <div className='flex gap-3  px-6'>
-                        <Avatar showFallback isBordered color="secondary" src='https://images.unsplash.com/broken'/>
+                        {
+                            user.imageUrl ? <Avatar className=""  showFallback isBordered
+                                color="secondary" src={user.imageUrl}/> :
+                                <Avatar showFallback isBordered color="secondary" src='https://images.unsplash.com/broken'/>
+                        }
                         <div>
                             <p className="text-[14px] font-semibold ">{user.nom} {user.prenom}</p>
                             <p className="font-medium text-[10px] ">{user.role}</p>
@@ -59,10 +64,7 @@ const Profile = () => {
                             <CgProfile className="text-[18px] font-bold "/>
                             <p>Profile</p>
                         </div>
-                        <div className="flex   cursor-pointer hover:bg-gray-300  text-[14px] p-2 font-medium  items-center px-6 gap-2 ">
-                            <MdSettings className="text-[18px] "/>
-                            <p>Manage Votre Acount</p>
-                        </div>
+                        <EditProfile user={user}/>
                     </div>
                     <Divider className="my-4"/>
                     <div onClick={()=>{

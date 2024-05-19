@@ -3,11 +3,13 @@ package com.project.bibliotheque.services;
 import com.project.bibliotheque.dtos.ClientDto;
 import com.project.bibliotheque.dtos.DocumentDto;
 import com.project.bibliotheque.dtos.NotificationDto;
+import com.project.bibliotheque.entities.Client;
 import com.project.bibliotheque.entities.Notification;
 import com.project.bibliotheque.mappers.BibliothecaireMapper;
 import com.project.bibliotheque.mappers.ClientMapper;
 import com.project.bibliotheque.mappers.DocumentMapper;
 import com.project.bibliotheque.mappers.NotificationMapper;
+import com.project.bibliotheque.repositories.ClientRepository;
 import com.project.bibliotheque.repositories.NotificationRepository;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,9 @@ public class NotificationService {
     private final ClientMapper clientMapper;
     private final BibliothecaireService bibliothecaireService;
     private final BibliothecaireMapper bibliothecaireMapper;
-    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper, DocumentService documentService, ClientService clientService, BibliothecaireService bibliothecaireService, DocumentMapper documentMapper, ClientMapper clientMapper, BibliothecaireMapper bibliothecaireMapper){
+    private final ClientRepository clientRepository;
+
+    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper, DocumentService documentService, ClientService clientService, BibliothecaireService bibliothecaireService, DocumentMapper documentMapper, ClientMapper clientMapper, BibliothecaireMapper bibliothecaireMapper, ClientRepository clientRepository){
         this.notificationRepository = notificationRepository;
         this.notificationMapper = notificationMapper;
         this.documentService = documentService;
@@ -40,6 +44,7 @@ public class NotificationService {
         this.documentMapper = documentMapper;
         this.clientMapper = clientMapper;
         this.bibliothecaireMapper = bibliothecaireMapper;
+        this.clientRepository = clientRepository;
     }
 
     public NotificationDto addNotification(NotificationDto notificationDto){
@@ -69,8 +74,9 @@ public class NotificationService {
     public Notification sendNotificationFromLocation(String message, Long recepteurId, String emetteurEmail, LocalDate dateDebut, LocalDate dateFin, Long documentId) {
         Notification notification = new Notification();
         notification.setMessage(message);
+        Client client = clientRepository.findById(recepteurId).orElse(null);
         DocumentDto documentDto = documentService.getDocumentById(documentId);
-        notification.setRecepteur(clientMapper.toEntity(clientService.getClientById(recepteurId)));
+        notification.setRecepteur(client);
         notification.setEmeteur(bibliothecaireMapper.toEntity(bibliothecaireService.getBibliothecaireByEmail(emetteurEmail)));
         if(dateFin.isBefore(LocalDate.now())){
             Long montant = 0L;
@@ -78,17 +84,14 @@ public class NotificationService {
             Long nbJour = (ChronoUnit.DAYS.between(dateDebut, LocalDate.now()));
             montant = (documentDto.getFraixExige() * nbJour ) + (10 * nbJourRetard);
             notification.setMontant(montant);
-            ClientDto clientDto = clientService.getClientById(recepteurId);
-            clientDto.setMontantTotal(clientDto.getMontantTotal() + montant);
-            clientService.updateClient(clientDto);
+            client.setMontantTotal(client.getMontantTotal() + montant);
         }else{
-            ClientDto clientDto = clientService.getClientById(recepteurId);
             Long nbJour = (ChronoUnit.DAYS.between(dateDebut, LocalDate.now()));
             Long montant = documentDto.getFraixExige() * nbJour;
             notification.setMontant(montant);
-            clientDto.setMontantTotal(clientDto.getMontantTotal() + montant);
-            clientService.updateClient(clientDto);
+            client.setMontantTotal(client.getMontantTotal() + montant);
         }
+        clientRepository.save(client);
         return notificationRepository.save(notification);
     }
 
@@ -96,8 +99,8 @@ public class NotificationService {
         Notification notification = new Notification();
         notification.setMessage(message);
         DocumentDto documentDto = documentService.getDocumentById(documentId);
-        ClientDto clientDto = clientService.getClientById(recepteurId);
-        notification.setRecepteur(clientMapper.toEntity(clientDto));
+        Client client = clientRepository.findById(recepteurId).orElse(null);
+        notification.setRecepteur(client);
         Long montant = 0L;
         notification.setEmeteur(bibliothecaireMapper.toEntity(bibliothecaireService.getBibliothecaireByEmail(emetteurEmail)));
         if(dateFin.isBefore(LocalDate.now())){
@@ -105,8 +108,9 @@ public class NotificationService {
             montant = (5 * nbJourRetard);
         }
         notification.setMontant(montant);
-        clientDto.setMontantTotal(clientDto.getMontantTotal() + montant);
-        clientService.updateClient(clientDto);
+        assert client != null;
+        client.setMontantTotal(client.getMontantTotal() + montant);
+        clientRepository.save(client);
         return notificationRepository.save(notification);
     }
 }

@@ -10,9 +10,9 @@ import {Input, Pagination, Select, SelectItem} from "@nextui-org/react";
 import axios from "../api/axios.js";
 const types = [
     {label: "Livre", value: "Livre"},
-    {label: "Disque Compact", value: "disque"},
-    {label: "Journal", value: "Journal"},
-    {label: "Cassete Video", value: "Cassete"},
+    {label: "Disque Compact", value: "DisqueCompacte"},
+    {label: "Journale", value: "Journale"},
+    {label: "Cassete Video", value: "CasseteVideo"},
     {label: "Periodique", value: "Periodique"},
 ];
 const trie = [
@@ -20,18 +20,46 @@ const trie = [
     {label: "Titre", value: "titre"},
 ]
 const langues = [
-    {label: "Francais", value: "fr"},
-    {label: "Anglais", value: "en"},
+    {label: "Francais", value: "Francais"},
+    {label: "Anglais", value: "Anglais"},
 ]
 const MostPopulare = (props) => {
     const {auth} = useAuth();
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
-
     const [isNotif, setIsNotif] = useAtom(isNotification);
     const [isActiveProfil, setIsActiveProfile] = useAtom(isActiveProfile);
     const [docs,setDocs]= useState([])
     const [nbPages,setNbPages] = useState(0)
+    const getDocsParTypeDoc = async(type) =>{
+        try {
+            const response = await axios.get('/documents/type?page='+page +'&search=' + search + '&type=' + type, {
+                headers: {
+                    "Authorization": "Bearer " + auth.token
+                }
+            });
+            console.log(response.data)
+            setDocs(response.data.content)
+            setNbPages(response.data.totalPages)
+        }catch (e) {
+            console.log(e)
+        }
+    }
+    const getDocsParLangue = async(langue) =>{
+        try {
+            const response = await axios.get('/documents/language?page='+page +'&search=' + search + '&langue=' + langue, {
+                headers: {
+                    "Authorization": "Bearer " + auth.token
+                }
+            });
+            console.log(response.data)
+            setDocs(response.data.content)
+            setNbPages(response.data.totalPages)
+        }catch (e) {
+            console.log(e)
+        }
+    }
+
     const getDocs = async() =>{
 
         try{
@@ -107,7 +135,8 @@ const MostPopulare = (props) => {
                         <div className="md:w-52">
                             <Select
                                 onSelectionChange={(value) => {
-                                    console.log(value);
+                                   getDocsParTypeDoc(value.currentKey).then(r => r).catch(e => e)
+                                    console.log(value)
                                 }
                             }
                                 items={types}
@@ -125,16 +154,11 @@ const MostPopulare = (props) => {
                                 items={langues}
                                 placeholder="Filter par langue"
                                 className="max-w-xs text-black/90 "
-                            >
-                                {(type) => <SelectItem className="text-black "
-                                                       key={type.value}>{type.label}</SelectItem>}
-                            </Select>
-                        </div>
-                        <div className="w-52">
-                            <Select
-                                items={trie}
-                                placeholder="Trie par"
-                                className="max-w-xs text-black/90 "
+                                onSelectionChange={(value) => {
+                                    getDocsParLangue(value.currentKey)
+                                    console.log(value)
+                                }
+                                }
                             >
                                 {(type) => <SelectItem className="text-black "
                                                        key={type.value}>{type.label}</SelectItem>}

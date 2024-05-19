@@ -21,10 +21,10 @@ public interface DocumentMapper {
     @Mapping(source = "fraixExige", target = "fraixExige")
     @Mapping(source = "nombreExemplaire", target = "nombreExemplaire")
     @Mapping(source = "estFortementdemander", target = "estFortementdemander")
-    @Mapping(source = "datePublication", target = "datePublication")
     @Mapping(source = "langue", target = "langue")
     @Mapping(source = "estPretable", target = "estPretable")
 
     DocumentDto toDto(Document document);
+    @Mapping(source = "idDocument", target = "idDocument")
     Document toEntity(DocumentDto documentDto);
 }
