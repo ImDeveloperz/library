@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://library-fz9o.onrender.com/"})
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
