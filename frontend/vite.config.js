@@ -10,5 +10,6 @@ export default defineConfig({
     },
     protocol: 'wws',
     host: 'library-bjeh.onrender.com',
+    port:10000
   },
 });
