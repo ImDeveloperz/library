@@ -9,7 +9,7 @@ export default defineConfig({
       protocol: 'wss', // Use WebSocket Secure since your site uses HTTPS
     },
     protocol: 'wws',
-    host: 'library-bjeh.onrender.com',
+    host: '0.0.0.0',
     port:10000
   },
 });
