@@ -8,5 +8,7 @@ export default defineConfig({
       host: 'library-bjeh.onrender.com',
       protocol: 'wss', // Use WebSocket Secure since your site uses HTTPS
     },
+    protocol: 'wws',
+    host: 'library-bjeh.onrender.com',
   },
 });
