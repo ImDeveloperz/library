@@ -34,10 +34,10 @@ const Login = (props) => {
             if(role === "CLIENT") {
                 navigation('/mostPopulaire')
             } else {
-                if (role == "ADMIN") {
+                if (role === "ADMIN") {
                     navigation('/admin')
                 } else {
-                    if (role == "BIBLIOTHECAIRE") {
+                    if (role === "BIBLIOTHECAIRE") {
                         navigation('/documents')
                     }
                 }

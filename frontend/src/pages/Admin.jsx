@@ -340,7 +340,7 @@ const Admin = (props) => {
         <NavbarLayout>
             <div>
                 <h1 className="text-3xl py-4 font-semibold">Gestion Des Bibliothecaires</h1>
-                <div className="bg-white rounded-md mt-2 p-6 text-black">
+                <div className="overflow-x-scroll bg-white rounded-md mt-2 p-6 text-black">
                     <Table
                         isCompact
                         removeWrapper

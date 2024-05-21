@@ -8,7 +8,7 @@ import Alocations from "../components/bibliothecaire/Alocations.jsx";
 const Transactions = (props) =>{
     return(
         <NavbarLayout>
-            <div className="bg-white rounded-md p-3">
+            <div className="bg-white overflow-x-scroll rounded-md p-3">
                 <Tabs color="secondary" variant="underlined"  className="text-black w-[50rem] " size="lg" >
                     <Tab key="Reservation" title="Reservation">
                         <Reservations/>
