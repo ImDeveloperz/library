@@ -27,26 +27,8 @@ const Register = (props) => {axios
         try {
             // Send a POST request to the /register endpoint
             const response = await axios.post('/auth/register', values);
-            const token = response.data?.token;
-            console.log(token);
-            const role = response?.data?.role;
-            const email = response?.data?.email;
-            console.log(response.data)
-            localStorage.setItem('token', token);
-            setAuth({role,email,token,isAuthenticated:true});
             setIsActiveRegister(false)
-            if(role === "CLIENT") {
-                navigation('/mostPopulaire')
-            } else {
-                if (role == "ADMIN") {
-                    navigation('/admin')
-                } else {
-                    if (role == "BIBLIOTHECAIRE") {
-                        navigation('/documents')
-                    }
-                }
-            }
-
+            setIsActiveLogin(true)
         } catch (e) {
             if (e.response) {
                 // The request was made and the server responded with a status code

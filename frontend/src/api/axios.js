@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'http://localhost:8080'
+    baseURL: 'https://library-1-xpel.onrender.com'
 });
 
 export const axiosPrivate = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "https://library-1-xpel.onrender.com",
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true
 });
