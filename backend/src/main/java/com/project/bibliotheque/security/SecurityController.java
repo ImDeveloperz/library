@@ -1,6 +1,8 @@
 package com.project.bibliotheque.security;
+import com.project.bibliotheque.entities.Admin;
 import com.project.bibliotheque.entities.Client;
 import com.project.bibliotheque.entities.Utilisateur;
+import com.project.bibliotheque.repositories.AdminRepository;
 import com.project.bibliotheque.repositories.ClientRepository;
 import com.project.bibliotheque.repositories.UtilisateurRepository;
 import org.springframework.http.HttpStatus;
@@ -29,12 +31,14 @@ public class SecurityController {
     private final JwtEncoder jwtEncoder;
     private final AuthenticationManager authentiationManager;
     private final UtilisateurRepository utilisateurRepository;
+    private final AdminRepository adminRepository;
     private final ClientRepository clientRepository;
-    public SecurityController(AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, UtilisateurRepository utilisateurRepository,ClientRepository clientRepository){
+    public SecurityController(AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, UtilisateurRepository utilisateurRepository,ClientRepository clientRepository,AdminRepository adminRepository){
         this.authentiationManager= authenticationManager;
         this.jwtEncoder = jwtEncoder;
         this.utilisateurRepository = utilisateurRepository;
         this.clientRepository = clientRepository;
+        this.adminRepository = adminRepository;
     }
 
     @GetMapping("/profile")
@@ -81,7 +85,7 @@ public class SecurityController {
         String password = (String) body.get("password");
         String nom = (String) body.get("nom");
         String prenom =  (String) body.get("prenom");
-        String role = "CLIENT";
+        String role = "ADMIN";
         String telephone = (String) body.get("telephone");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String d = (String) body.get("naissance");
@@ -94,7 +98,7 @@ public class SecurityController {
             return ResponseEntity.badRequest().body(Map.of("error", "Email is already in use"));
         }
 
-        Client newUser = new Client();
+        Admin newUser = new Admin();
         newUser.setEmail(email);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
@@ -105,7 +109,7 @@ public class SecurityController {
         newUser.setTelephone(telephone);
         newUser.setNaissance(naissance);
         newUser.setAddresse(addresse);
-        clientRepository.save(newUser);
+        adminRepository.save(newUser);
         String scope = newUser.getRole();
         // Generate token for new user
         Instant instant = Instant.now();
