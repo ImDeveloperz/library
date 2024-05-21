@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:5173", "https://library-fz9o.onrender.com/"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:8081", "https://library-fz9o.onrender.com/"})
 @RestController
 @RequestMapping("/bibliothecaire")
 public class BibliothecaireController{
@@ -49,7 +49,6 @@ public class BibliothecaireController{
         String password = (String) body.get("password");
         String nom = (String) body.get("nom");
         String prenom =  (String) body.get("prenom");
-        String role = "CLIENT";
         String telephone = (String) body.get("telephone");
         Object naissanceObj = body.get("naissance");
         Date naissance = null;
@@ -76,7 +75,6 @@ public class BibliothecaireController{
         newUser.setPassword(encodedPassword);
         newUser.setNom(nom);
         newUser.setPrenom(prenom);
-        newUser.setRole(role);
         newUser.setTelephone(telephone);
         newUser.setImageUrl(imageUrl);
         newUser.setNaissance(naissance);

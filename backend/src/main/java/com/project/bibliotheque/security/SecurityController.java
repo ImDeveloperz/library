@@ -22,7 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
-@CrossOrigin(origins = {"http://localhost:5173", "https://library-fz9o.onrender.com/"})
+@CrossOrigin(origins = {"http://localhost:5173","http://localhost:8081/", "https://library-fz9o.onrender.com/"})
 @RestController
 @RequestMapping("/auth")
 public class SecurityController {

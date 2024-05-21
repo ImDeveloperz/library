@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@CrossOrigin(origins = {"http://localhost:5173", "https://library-fz9o.onrender.com/"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:8081", "https://library-fz9o.onrender.com/"})
 @RestController
 @RequestMapping("/rapports")
 public class RapportController {

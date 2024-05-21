@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@CrossOrigin(origins = {"http://localhost:5173", "https://library-fz9o.onrender.com/"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:8081", "https://library-fz9o.onrender.com/"})
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
@@ -149,10 +149,9 @@ public class DocumentController {
                     disqueCompacte.setFraixExige(fraixExige);
                     disqueCompacte.setNombreExemplaire(nombreExemplaire);
                     disqueCompacte.setEstFortementdemander(true);
-
                     disqueCompacte.setDatePublication(datePublication);
                     disqueCompacte.setLangue(langue);
-                    disqueCompacte.setEstPretable(true);
+                    disqueCompacte.setEstPretable(false);
                     disqueCompacte.setEtat(EtatDocument.CREE);
                     disqueCompacte.setDiscripteurs(discripteurs);
                     disqueCompacte.setDuree(duree);
@@ -191,6 +190,7 @@ public class DocumentController {
                 periodique.setLangue(langue);
                 periodique.setEtat(EtatDocument.CREE);
                 periodique.setDiscripteurs(discripteurs);
+                periodique.setEstPretable(false);
                 periodique.setEdition(edition);
                 periodiqueRepository.save(periodique);
                 break;

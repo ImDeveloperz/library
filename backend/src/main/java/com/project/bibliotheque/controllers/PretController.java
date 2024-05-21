@@ -13,7 +13,7 @@ import com.project.bibliotheque.services.RapportService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = {"http://localhost:5173", "https://library-fz9o.onrender.com/"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:8081", "https://library-fz9o.onrender.com/"})
 @RestController
 @RequestMapping("/prets")
 public class PretController {

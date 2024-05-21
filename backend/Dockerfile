@@ -1,3 +1,7 @@
-FROM openjdk:17
-ADD target/library.jar library.jar
-ENTRYPOINT ["java","-jar","/library.jar"]
+FROM openjdk:21-slim-bullseye
+COPY . .
+
+COPY /target/bibliotheque-0.0.1-SNAPSHOT.jar bibliotheque.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","bibliotheque.jar"]

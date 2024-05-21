@@ -55,9 +55,8 @@ public class SecurityConfig {
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 authorities.add(authority);
                 return new User(utilisateur.getNom(), utilisateur.getPassword(), authorities);
-
             } else {
-                throw new UsernameNotFoundException(STR."Votre mot de passe ou  email est incorect : \{email}");
+                throw new UsernameNotFoundException("Votre mot de passe ou  email est incorect : " + email);
             }
         };
     }

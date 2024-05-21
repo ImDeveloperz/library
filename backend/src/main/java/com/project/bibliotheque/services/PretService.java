@@ -36,13 +36,13 @@ public class PretService {
         pret.setCarteClient(carteClient);
         pret.setFraixRetard(5);
         pret.setDateDebut(java.sql.Date.valueOf(java.time.LocalDate.now()));
-        if(document.isEstFortementdemander() == true){
+        if(document.isEstFortementdemander()){
             pret.setDateFin(java.sql.Date.valueOf(java.time.LocalDate.now().plusDays(7)));
         }else{
             pret.setDateFin(java.sql.Date.valueOf(java.time.LocalDate.now().plusDays(21)));
         }
         Notification notification = new Notification();
-        notification.setMessage(STR."Votre pret du\{documentDto.getTitre()} a été enregistré avec succès");
+        notification.setMessage("Votre pret du ".concat(documentDto.getTitre()).concat(" a été enregistré avec succès"));
         notification.setRecepteur(carteClient.getClient());
         notification.setEstVue(false);
         return pretRepository.save(pret);
