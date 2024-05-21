@@ -66,7 +66,7 @@ const Documents = (props) => {
             }}>
                 <h1 className="text-3xl font-semibold">Gestion Des Documents</h1>
                 <div className="pt-6 items-center text-black flex gap-2">
-                    <div className="flex flex-col gap-2 md:flex-row ">
+                    <div className="flex flex-col gap-2 lg:flex-row ">
                         <div className=" ">
                             <Input
                                 value={search}
@@ -107,7 +107,7 @@ const Documents = (props) => {
                             />
 
                         </div>
-                        <div className="md:w-52">
+                        <div className="md:flex hidden md:w-52">
                             <Select
                                 onSelectionChange={(value) => {
                                     console.log(value);
@@ -122,7 +122,7 @@ const Documents = (props) => {
                             </Select>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-2 md:flex-row ">
+                    <div className="md:flex hidden flex-col gap-2 lg:flex-row ">
                         <div className="w-52">
                             <Select
                                 items={langues}

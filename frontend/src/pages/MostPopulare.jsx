@@ -132,7 +132,7 @@ const MostPopulare = (props) => {
                             />
 
                         </div>
-                        <div className="md:w-52">
+                        <div className="md:w-52 md:flex hidden">
                             <Select
                                 onSelectionChange={(value) => {
                                    getDocsParTypeDoc(value.currentKey).then(r => r).catch(e => e)
@@ -148,7 +148,7 @@ const MostPopulare = (props) => {
                             </Select>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-2 md:flex-row ">
+                    <div className="md:flex hidden flex-col  gap-2 md:flex-row ">
                         <div className="w-52">
                             <Select
                                 items={langues}

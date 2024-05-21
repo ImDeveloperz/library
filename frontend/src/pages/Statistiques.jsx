@@ -289,7 +289,7 @@ const Admin = (props) => {
         <NavbarLayout>
             <div className="mb-6" >
                 <h1 className="text-3xl py-4 font-semibold">Gestion Des Statistiques</h1>
-                <div  className="bg-white rounded-md mt-2 p-6 text-black">
+                <div  className="bg-white overflow-x-scroll rounded-md mt-2 p-6 text-black">
                     <Table
                         id="statistiques"
                         isCompact={true}
