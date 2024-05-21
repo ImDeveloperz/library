@@ -33,7 +33,7 @@ const Reserve = ({type, idBook}) => {
         }
     }
     const getCarteClient = () =>{
-        axios.get("http://localhost:8080/carteClient/client?id=" + client.idcartClient, {
+        axios.get("/carteClient/client?id=" + client.idcartClient, {
             headers : {
                 "Authorization" : "Bearer " + auth.token,
             }
@@ -47,7 +47,7 @@ const Reserve = ({type, idBook}) => {
         )
     }
     const updateCarteClient = () => {
-            axios.put("http://localhost:8080/carteClient/nbOperation", {
+            axios.put("/carteClient/nbOperation", {
                 id: carteClient.id,
                 nbOperation: carteClient.nbOperation + 1
             }, {
@@ -77,7 +77,7 @@ const Reserve = ({type, idBook}) => {
     const reserve = () => {
         console.log("idBook :  ",type);
 
-        axios.post("http://localhost:8080/reservations/reserve", {
+        axios.post("reservations/reserve", {
             idCart: client.idcartClient,
             idDocument: idBook,
             type: type,

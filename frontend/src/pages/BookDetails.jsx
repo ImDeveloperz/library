@@ -92,7 +92,7 @@ const BookDetails = () => {
                     'Authorization': 'Bearer ' + auth.token,
                 }
             });
-            console.log(response.data)
+
             setDoc(response.data)
         }catch (e) {
             console.log(e)
@@ -138,6 +138,11 @@ const BookDetails = () => {
                                 <p className=" text-[15px]  font-medium">{formatDate(doc.datePublication)}</p>
                             </div>
                             <div className="md:flex items-center gap-2">
+                                <p className=" text-[16px] text-[#4A4E69] font-semibold">Genres : <span
+                                ></span>
+                                </p>
+                            </div>
+                            <div className="md:flex items-center gap-2">
                                 <p className=" text-[16px] text-[#4A4E69] font-semibold">Type : <span
                                     className=" text-[15px] font-medium">{doc.type}</span></p>
 
@@ -150,18 +155,21 @@ const BookDetails = () => {
                             </div>
                             <div className="md:flex items-center gap-2">
                                 <p className=" text-[16px] text-[#4A4E69] font-semibold">Langue : <span
-                                    className=" text-[15px]  font-medium">{doc.langue}</span></p>
+                                    className=" text-[15px]  font-medium">Anglais Britannique</span></p>
 
                             </div>
-
                             <div className="md:flex items-center gap-2">
-                                <p className=" text-[16px] text-[#4A4E69] font-semibold">Nombre Exemplaire disponible(Maintenant)
-                                    : <span className=" text-[15px]  font-medium">{doc.nombreExemplaire}</span></p>
+                                <p className=" text-[16px] text-[#4A4E69] font-semibold">Nombre De Pages : <span
+                                    className=" text-[15px]  font-medium">230</span></p>
+                            </div>
+                            <div className="md:flex items-center gap-2">
+                                <p className=" text-[16px] text-[#4A4E69] font-semibold">Nombre Exemplaire disponible
+                                    : <span className=" text-[15px]  font-medium">23</span></p>
 
                             </div>
                             <div className="md:flex items-center gap-2">
                                 <p className=" text-[16px] text-[#4A4E69] font-semibold">Note : <span
-                                    className=" text-[15px]  font-medium">4.5 </span></p>
+                                    className=" text-[15px]  font-medium">4.5</span></p>
                             </div>
                         </div>
                     </div>
@@ -169,24 +177,22 @@ const BookDetails = () => {
                         <Popover >
                             <PopoverTrigger>
                                 {
-                                    doc?.estPretable ? (
-
-                                    client?.nbrEmprunte < 5 ?
-                                    (<Button  onClick={() => {
-                                    setIsActiveReservation(!isActiveReservation)
-                                }} className="border focus:outline-none bg-[#564592] flex items-center justify-center button-36  py-3 hover:bg-[#4A4E69]  w-[40%] hover:shadow-blue-800 text-white  rounded-md  font-semibold text-[13px] px-10 ">
-                                Emprinter
-                            </Button>) :
-                            (
-                            <Tooltip color="secondary" content="vous avez depasser la limite du 5 documents" size="sm" >
-                                <div className="w-[40%]  cursor-not-allowed ">
-                                    <Button isDisabled  className="border w-full focus:outline-none bg-[#564592] flex items-center justify-center button-36  py-3 hover:bg-[#4A4E69]  hover:shadow-blue-800 text-white  rounded-md  font-semibold text-[13px] px-10 ">
-                                        Emprunter
-                                    </Button>
-                                </div>
-                            </Tooltip>
-                            )) : <></>}
-
+                                    client.nbrEmprunte < 5 ?
+                                        (<Button  onClick={() => {
+                                            setIsActiveReservation(!isActiveReservation)
+                                        }} className="border focus:outline-none bg-[#564592] flex items-center justify-center button-36  py-3 hover:bg-[#4A4E69]  w-[40%] hover:shadow-blue-800 text-white  rounded-md  font-semibold text-[13px] px-10 ">
+                                            Emprinter
+                                        </Button>) :
+                                        (
+                                            <Tooltip color="secondary" content="vous avez depasser la limite du 5 documents" size="sm" >
+                                                <div className="w-[40%]  cursor-not-allowed ">
+                                                    <Button isDisabled  className="border w-full focus:outline-none bg-[#564592] flex items-center justify-center button-36  py-3 hover:bg-[#4A4E69]  hover:shadow-blue-800 text-white  rounded-md  font-semibold text-[13px] px-10 ">
+                                                        Emprunter
+                                                    </Button>
+                                                </div>
+                                            </Tooltip>
+                                        )
+                                }
                             </PopoverTrigger>
                             {!client.estRegistered ?
                                 contentCreateCard("emprunter") :
@@ -200,7 +206,7 @@ const BookDetails = () => {
                         <Popover>
                             <PopoverTrigger>
                                 {
-                                    client.nbrEmprunte < 5  ?
+                                    client.nbrEmprunte < 5 ?
                                         ( <Button
                                             onClick={() => {
                                                 setIsActiveReservation(!isActiveReservation)
@@ -221,14 +227,14 @@ const BookDetails = () => {
                                         )
                                 }
                             </PopoverTrigger>
-                                {!client.estRegistered ?
-                                    contentCreateCard("louer") :
-                                    (
-                                        <PopoverContent>
-                                            <Reserve type="location" idBook={idBook}/>
-                                        </PopoverContent>
-                                    )
-                                }
+                            {!client.estRegistered ?
+                                contentCreateCard("louer") :
+                                (
+                                    <PopoverContent>
+                                        <Reserve type="location" idBook={idBook}/>
+                                    </PopoverContent>
+                                )
+                            }
                         </Popover>
                     </div>
                 </div>
