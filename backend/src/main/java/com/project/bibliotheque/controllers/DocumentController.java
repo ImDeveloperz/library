@@ -119,7 +119,7 @@ public class DocumentController {
                     livre.setEstPretable(false);
                 }
                 livre.setLangue(langue);
-                livre.setEstPretable(false);
+                livre.setEstPretable(true);
                 livre.setEtat(EtatDocument.CREE);
                 livre.setDiscripteurs(discripteurs);
                 livreRepository.save(livre);
