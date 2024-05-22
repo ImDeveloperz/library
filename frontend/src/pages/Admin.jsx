@@ -29,6 +29,8 @@ import AddBibliothecaire from "../components/admin/AddBibliothecaire.jsx";
 import {IoIosCheckbox} from "react-icons/io";
 import {MdDelete} from "react-icons/md";
 import toast from "react-hot-toast";
+import {useAtom} from "jotai";
+import {isLoadingData} from "../context/GlobalProvider.jsx";
 
 const statusColorMap = {
     active: "success",
@@ -38,10 +40,12 @@ const statusColorMap = {
 
 const INITIAL_VISIBLE_COLUMNS = ["id","nom", "email", "status", "actions"];
 const Admin = (props) => {
+    const [isLoadingDataa,setIsLoadingDataa] = useAtom(isLoadingData);
     const [isChanged, setIsChanged] = React.useState(false);
     const {auth} = useAuth();
     const [users,setUsers] = React.useState([]);
     const getUsers = async () => {
+        setIsLoadingDataa(true)
         try{
             const response = await axios.get('/bibliothecaire',{
                 headers:{
@@ -49,7 +53,7 @@ const Admin = (props) => {
                 }
             });
             setUsers(response.data);
-            console.log(response.data)
+            setIsLoadingDataa(false)
         }catch (e) {
             console.log(e)
         }

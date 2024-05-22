@@ -22,7 +22,6 @@ const Notification = (props) => {
             });
             const data = response.data.utilisateur
             setUser(data);
-            console.log(user)
         }
         catch (error) {
             console.log(error)
@@ -35,7 +34,6 @@ const Notification = (props) => {
                     'Authorization': 'Bearer ' + auth.token,
                 }
             });
-            console.log(response.data)
             setNotifications(response.data);
         }catch (e) {
             console.log(e)

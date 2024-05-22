@@ -5,7 +5,7 @@ import {SearchIcon} from "../components/SearchIcon.jsx";
 import Book from "../components/Book.jsx";
 import useAuth from "../hook/useAuth.js";
 import {useAtom}  from "jotai";
-import {isActiveProfile, isNotification} from "../context/GlobalProvider.jsx";
+import {isActiveProfile, isLoadingData, isNotification} from "../context/GlobalProvider.jsx";
 import axios from "../api/axios.js";
 import AddDocument from "../components/bibliothecaire/GestionDocument.jsx";
 
@@ -26,6 +26,7 @@ const langues = [
 ]
 
 const Documents = (props) => {
+    const [isLoadingDataa,setIsLoadingDataa] = useAtom(isLoadingData);
     const {auth} = useAuth();
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(0);
@@ -35,7 +36,7 @@ const Documents = (props) => {
     const [docs,setDocs]= useState([])
     const [nbPages,setNbPages] = useState(0)
     const getDocs = async() =>{
-
+        setIsLoadingDataa(true)
         try{
             const response = await axios.get('/documents?page=' +page+'&search='+ search,{
                 headers:{
@@ -44,8 +45,7 @@ const Documents = (props) => {
             });
             setDocs(response.data.content)
             setNbPages(response.data.totalPages)
-            console.log(response.data)
-            console.log(docs)
+            setIsLoadingDataa(false)
         }catch(e){
             console.log(e)
         }

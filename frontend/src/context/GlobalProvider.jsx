@@ -9,3 +9,4 @@ export const isNotification = atom(false);
 export const isReserveActive = atom(false);
 export const isCardtClientActive = atom(false);
 export const isStoreActive = atom(false);
+export const isLoadingData = atom(false);

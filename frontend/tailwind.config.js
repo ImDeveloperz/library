@@ -27,7 +27,14 @@ export default {
     // => @media (min-width: 1536px) { ... }
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      layout: {
+        ariaLabel: "NextUI Layout", // Not a valid config key for layout
+      },
+    }),
+    require('daisyui'),
+  ],
 
 }
 

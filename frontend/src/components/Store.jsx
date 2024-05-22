@@ -20,7 +20,6 @@ const Store = (props) => {
                 }
             })
             setTransactions(response.data)
-            console.log(response)
         }catch (error){
             console.log(error)
         }

@@ -25,21 +25,26 @@ import {SearchIcon} from "../components/utils/SearchIcon.jsx";
 import axios from "../api/axios.js";
 import useAuth from "../hook/useAuth.js";
 import Pdf from "../components/documents/Pdf.jsx";
+import {useAtom} from "jotai";
+import {isLoadingData} from "../context/GlobalProvider.jsx";
 
 const INITIAL_VISIBLE_COLUMNS = ["id","documentTitre", "nombrePret", "nombreRetour", "nombrePerdu", "nombreReservation", "nombreLocation", "dateStatistique"];
 const Admin = (props) => {
     const [isChanged, setIsChanged] = React.useState(false);
     const [statistiques, setStatistiques] = React.useState([]);
+    const [isLoadingDataa,setIsLoadingDataa] = useAtom(isLoadingData);
+
     const {auth} = useAuth();
     const getStatistiques = async () => {
+        setIsLoadingDataa(true)
         try{
             const response = await axios.get('/rapports',{
                 headers:{
                     "Authorization" : "Bearer " + auth.token
                 }
             });
+            setIsLoadingDataa(false)
             setStatistiques(response.data);
-            console.log(response.data)
         }catch (e) {
             console.log(e)
         }

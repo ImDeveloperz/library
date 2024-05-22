@@ -5,7 +5,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import NavbarLayout from "../components/NavbarLayout.jsx";
 import {useAtom} from "jotai";
 import Reserve from "../components/Reserve.jsx";
-import {isActiveRegister, isReserveActive} from "../context/GlobalProvider.jsx";
+import {isActiveRegister, isLoadingData, isReserveActive} from "../context/GlobalProvider.jsx";
 import {
     Button,
     useDisclosure, PopoverContent, Popover, PopoverTrigger, Tooltip
@@ -28,6 +28,7 @@ export function formatDate(inputDate) {
 
 
 const BookDetails = () => {
+    const [isLoadingDataa,setIsLoadingDataa] = useAtom(isLoadingData);
     const navigate = useNavigate();
     const {onClose,isOpen} = useDisclosure();
     const [client,setClient] = useState({})
@@ -85,14 +86,14 @@ const BookDetails = () => {
     );
 
     const getBook = async ()=>{
-
+        setIsLoadingDataa(true)
         try{
             const response = await axios.get('/documents/' + idBook,{
                 headers:{
                     'Authorization': 'Bearer ' + auth.token,
                 }
             });
-
+            setIsLoadingDataa(false)
             setDoc(response.data)
         }catch (e) {
             console.log(e)

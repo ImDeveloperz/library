@@ -7,14 +7,17 @@ import {formatDate} from "./BookDetails.jsx";
 import Pdf from "../components/documents/Pdf.jsx";
 import ClientCarte from "../components/ClientCarte.jsx";
 import {useNavigate} from "react-router-dom";
+import {useAtom} from "jotai";
+import {isLoadingData} from "../context/GlobalProvider.jsx";
 const ProfileDisplay = (props) =>{
     const { auth } = useAuth();
     const navigate = useNavigate();
     const [isLoading, setLoading] = useState(false);
     const [user,setUser] = useState({});
     const [isCarteClient,setIsCarteClient] = useState(false);
-
+    const [isLoadingDataa,setIsLoadingDataa] = useAtom(isLoadingData);
     const  getUser = async () => {
+        setIsLoadingDataa(true)
         try{
             const response = await axios.get('/users/user?email='+auth.email,{
                 headers:{
@@ -22,7 +25,7 @@ const ProfileDisplay = (props) =>{
                 }
             });
             setUser(response.data.utilisateur);
-            console.log(response.data)
+            setIsLoadingDataa(false)
         }catch (error){
             console.log(error)
         }

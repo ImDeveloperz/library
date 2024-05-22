@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useAtom}  from "jotai";
 import useAuth from "../hook/useAuth.js";
 import NavbarLayout from "../components/NavbarLayout.jsx";
-import {isActiveProfile, isNotification} from "../context/GlobalProvider.jsx";
+import {isActiveProfile, isLoadingData, isNotification} from "../context/GlobalProvider.jsx";
 import {Cloudinary} from "@cloudinary/url-gen";
 import Book from "../components/Book.jsx";
 import {SearchIcon} from "../components/SearchIcon.jsx";
@@ -31,6 +31,7 @@ const MostPopulare = (props) => {
     const [isActiveProfil, setIsActiveProfile] = useAtom(isActiveProfile);
     const [docs,setDocs]= useState([])
     const [nbPages,setNbPages] = useState(0)
+    const [isLoadingDataa,setIsLoadingDataa] = useAtom(isLoadingData);
     const getDocsParTypeDoc = async(type) =>{
         try {
             const response = await axios.get('/documents/type?page='+page +'&search=' + search + '&type=' + type, {
@@ -38,7 +39,6 @@ const MostPopulare = (props) => {
                     "Authorization": "Bearer " + auth.token
                 }
             });
-            console.log(response.data)
             setDocs(response.data.content)
             setNbPages(response.data.totalPages)
         }catch (e) {
@@ -52,7 +52,6 @@ const MostPopulare = (props) => {
                     "Authorization": "Bearer " + auth.token
                 }
             });
-            console.log(response.data)
             setDocs(response.data.content)
             setNbPages(response.data.totalPages)
         }catch (e) {
@@ -61,7 +60,7 @@ const MostPopulare = (props) => {
     }
 
     const getDocs = async() =>{
-
+        setIsLoadingDataa(true)
         try{
             const response = await axios.get('/documents?page=' +page+'&search='+ search,{
                 headers:{
@@ -70,8 +69,7 @@ const MostPopulare = (props) => {
             });
             setDocs(response.data.content)
             setNbPages(response.data.totalPages)
-            console.log(response.data)
-            console.log(docs)
+            setIsLoadingDataa(false)
         }catch(e){
             console.log(e)
         }
@@ -136,7 +134,6 @@ const MostPopulare = (props) => {
                             <Select
                                 onSelectionChange={(value) => {
                                    getDocsParTypeDoc(value.currentKey).then(r => r).catch(e => e)
-                                    console.log(value)
                                 }
                             }
                                 items={types}
@@ -156,7 +153,6 @@ const MostPopulare = (props) => {
                                 className="max-w-xs text-black/90 "
                                 onSelectionChange={(value) => {
                                     getDocsParLangue(value.currentKey)
-                                    console.log(value)
                                 }
                                 }
                             >
