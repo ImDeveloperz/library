@@ -26,7 +26,7 @@ const ClientCarte = (props) => {
         }
     }
     const getCarteClient = () =>{
-        axios.get("http://localhost:8080/carteClient/client?id=" + client.idcartClient, {
+        axios.get("/carteClient/client?id=" + client.idcartClient, {
             headers : {
                 "Authorization" : "Bearer " + auth.token,
             }
@@ -40,7 +40,7 @@ const ClientCarte = (props) => {
         )
     }
     const createBareCode =  () => {
-        axios.get(`http://localhost:8080/clients/qrcode?email=`+ auth.email, {
+        axios.get(`/clients/qrcode?email=`+ auth.email, {
             headers : {
                 "Authorization" : "Bearer " + auth.token
             },

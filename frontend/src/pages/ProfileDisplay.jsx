@@ -38,9 +38,9 @@ const ProfileDisplay = (props) =>{
                         Votre Profile
                     </h1>
                 </div>
-                <div className=" flex flex-col w-full gap-4 ">
-                    <div className="flex gap-5 w-full" >
-                        <div className="py-5 w-full text-black mt-4 px-5 bg-white rounded-xl">
+                <div className=" flex flex-col  w-full gap-4 ">
+                    <div className="flex flex-col md:flex-row gap-5 w-full" >
+                        <div className="py-5  w-full text-black mt-4 px-5 bg-white rounded-xl">
                             <div className="flex gap-4 items-center">
                                 {
                                     user.imageUrl ? <Avatar className=" h-32 w-32 "  showFallback isBordered color="secondary" src={user.imageUrl}/> :
