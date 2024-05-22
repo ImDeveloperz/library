@@ -76,7 +76,7 @@ const Register = (props) => {axios
                     <ErrorMessage name="confirmPassword" component="div" className="text-red-600 text-[12px] font-normal text-left" />
                     <Field name="confirmPassword" type="password" placeholder="Confirm Password" className="border focus:outline-none p-2 rounded text-gray-700 " />
                     {
-                        !isLoasing ? (
+                        !isLoading ? (
                             <button type="submit" className="bg-[#564592] text-white py-2 px-6 rounded-md">Register</button>
                         ) : (
                             <button disabled type="button"
